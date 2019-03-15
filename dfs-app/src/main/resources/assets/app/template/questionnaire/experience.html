@@ -1,0 +1,75 @@
+<h4>Please fill the form below to the best of your knowledge</h4>
+<hr>
+<form name="experience">
+    <div class="form-group">
+        <label>Professional Title <span style="color: red">*</span></label> </br>
+        <small class="form-text text-muted">Please select your professional title</small>
+        <select class="form-control" ng-model="title" ng-options="title for title in titleGroup" required></select>
+    </div>
+
+    <div class="form-group">
+        <label>Years of professional experience <span style="color: red">*</span></label> </br>
+        <small class="form-text text-muted">Please enter the number of years you've been working in a professional environment</small>
+         <input type="number" min="0" class="form-control" ng-model="professionalExperience" required>
+    </div>
+
+    <div class="form-group">
+        <label>Are you currently employed (or was employed) in Education? <span style="color: red">*</span></label> </br>
+        <small class="form-text text-muted">For example: teacher, principal, school administrator, etc.</small>
+        <select class="form-control" ng-model="isEmployedInEducation" ng-options="x for x in binaryGroup" required></select>
+    </div>
+
+    <div class="form-group">
+        <label>Years of performance appraisal experience <span style="color: red">*</span></label> </br>
+        <small class="form-text text-muted">Please select the number of years you've been involved with providing performance appraisal reviews</small>
+        <input type="number" min="0" class="form-control" ng-model="paExperience" required>
+    </div>
+
+    <div class="form-group">
+        <label>Number of Subordinates <span style="color: red">*</span></label> </br>
+        <small class="form-text text-muted">Please enter the total number of people currently reporting to you</small>
+        <input type="number" min="0" class="form-control" ng-model="subordinates" required>
+    </div>
+
+    <div class="form-group">
+        <label>Total number of reviews to date (approx.) <span style="color: red">*</span></label> </br>
+        <small class="form-text text-muted">Please enter, to the best of your ability, the total number of performance reviews you've given so far in your career</small>
+        <input type="number" min="0" class="form-control" ng-model="reviewsUpToDate" required>
+    </div>
+
+    <div class="form-group">
+        <label>Total number of reviewees to date (approx.) <span style="color: red">*</span></label> </br>
+        <small class="form-text text-muted">Please enter, to the best of your ability, the total number of people you reviewed for performance evaluation so far in your career</small>
+        <input type="number" min="0" class="form-control" ng-model="revieweesUpToDate" required>
+    </div>
+
+    <div class="form-group">
+        <label>Have you ever been involved with personnel selection? <span style="color: red">*</span></label>
+        <select class="form-control" ng-model="personnelSelection" ng-options="x for x in binaryGroup" required></select>
+    </div>
+
+    <div class="form-group" ng-show="personnelSelectionBool">
+        <label>Total number of candidates interviewed (approx.) <span style="color: red">*</span></label> </br>
+        <small class="form-text text-muted">Please enter, to the best of your ability, the total number candidates you interviewed for a hiring position</small>
+        <input type="number" min="0" class="form-control" ng-model="interviewees" ng-required="personnelSelectionBool">
+    </div>
+
+    <div class="form-group">
+        <label>How often do you receive performance appraisal training? <span style="color: red">*</span></label> </br>
+        <small class="form-text text-muted">This includes any type of instruction of how to conduct performance appraisal in a professional environment</small>
+        <select class="form-control" ng-model="trainingFrequency" ng-options="x for x in trainingFrequencyGroup" required></select>
+    </div>
+
+    <div class="form-group" ng-show="showTrainingType">
+        <label>Please choose the option that best describe your performance appraisal training <span style="color: red">*</span></label>
+        <select class="form-control" ng-model="trainingType" ng-options="x for x in trainingTypeGroup" ng-required="showTrainingType"></select>
+    </div>
+
+    <div class="form-group" ng-show="showTrainingTypeCommentBox">
+        <label for="otherPaTraining">Please tell us about the performance appraisal training that you have received <span style="color: red">*</span></label>
+        <textarea class="form-control" rows="3" id="otherPaTraining" ng-model="trainingTypeComment" maxlength="200" ng-required="showTrainingTypeCommentBox"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary pull-right" ng-disabled="experience.$invalid" ng-click="submit()">Submit</button>
+
+</form>

@@ -1,0 +1,281 @@
+<style>
+    #teacher1RadioBtnLabel, #PromotionDecisionRadioBtnLabel {
+        margin-left:180px;
+    }
+    @media (max-width: 479px) {
+        #teacher1RadioBtnLabel, #PromotionDecisionRadioBtn {
+            margin-left: 100px;
+        }
+    }
+    .jobFunctionRating {
+        margin-top:15px;
+        padding-left:20px;l
+    }
+    #feedbackTable td {
+        text-align: center;
+    }
+    #feedbackTable th {
+        font-size: 14px;
+    }
+</style>
+<div class="row" style="margin-top:30px" ng-cloak>
+    <div class="col-xs-12" ng-hide="isExpert">
+        <div class="alert alert-success" role="alert" ng-show="isPractice">
+            This is a practice round.
+            <p class="pull-right" style="font-size:16px" ng-show="showTimer">
+                You need to spend at least {{waitDuration}} seconds per evaluation | <Strong>Timer: {{countdown}}</Strong>
+            </p>
+        </div>
+        <div class="alert alert-info" role="alert" ng-show="!isPractice && showTimer">
+            <span ng-hide="isRelative">This is <strong>NOT</strong> a practice round!</span>.
+            <p class="pull-right" style="font-size:16px" ng-show="showTimer">
+                You need to spend at least {{waitDuration}} seconds per evaluation | <Strong>Timer: {{countdown}}</Strong>
+            </p>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12 col-sm-4">
+        <h4 id="evaluationProgressLabel">{{teacherEvaluationLabel}} [ {{ currentEvaluation }} of {{ totalEvaluations }} ]</h4>
+    </div>
+    <div class="col-xs-12 col-sm-8 pull-left">
+        <div class="progress" style="margin-top:10px" ng-class="alert.class">
+            <div class="progress-bar" role="progressbar" ng-style="progressBarStyle" aria-valuenow="25"
+                 aria-valuemin="0" aria-valuemax="9">{{ currentEvaluation }} of {{ totalEvaluations }}
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12" style="margin-bottom:30px;" ng-show="isRelative">
+        <p>The grid below is a representation of two teacher's dossiers, both of whom are eligible for tenure promotion.
+            To review
+            each teacher on a specific job function (Student learning, Instruction practice, or Professionalism) click
+            on the button labeled supervisor
+            next to each job function to view the supervisor's review of that teacher on the job function (<span
+                    style="color:#800000">Teacher names are masked to protect their identity</span>).
+            When done please choose which teacher you recommend for promotion and fill out the form below.</p>
+    </div>
+    <div class="col-sm-12" style="margin-bottom:30px;" ng-show="!isRelative">
+        <p>The grid below is a representation of a teacher's dossier.
+            Please read ALL supervisor reviews of the teacher on EVERY job function by clicking on the button labeled supervisor.
+            To learn more about each job function click on button labeled More next to each job function below.
+            (<span
+                    style="color:#800000">Teacher names are masked to protect their identity</span>).
+            When done please answer the questions below based on your evaluation.</p>
+    </div>
+</div>
+<div class="row" style="margin-bottom:40px;">
+    <div ng-class="setClass()">
+        <h5><span class="glyphicon glyphicon-user"></span> {{ teacherOneLabel }}</h5>
+    </div>
+    <div class="col-xs-5 text-center" ng-show="isRelative">
+        <h5><span class="glyphicon glyphicon-user"></span> Teacher 2</h5>
+    </div>
+</div>
+<!--Teachers Dossiers: Begin-->
+<eval job-function="Student Learning" job-function-code="SL" is-relative="isRelative"></eval>
+<eval job-function="Instructional Practice" job-function-code="IP" is-relative="isRelative"></eval>
+<eval job-function="Professionalism" job-function-code="PF" is-relative="isRelative"></eval>
+<!-- Modal -->
+<div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    <span class="glyphicon glyphicon-comment" style="font-size: 25px;"> </span>
+                    <strong>{{ modalTitle }}</strong>
+                </h5>
+            </div>
+            <div class="modal-body" data-ng-bind-html="modalBodyTrusted">
+            </div>
+            <div class="modal-footer" style="background-color:#F0F0F0">
+                <span ng-show="reviewModal.showCountDownLabel">Button will be enabled in {{reviewModal.modelCloseDuration}} seconds</span>
+                <button type="button" class="btn btn-secondary" style="background-color:#D6D6D6" data-dismiss="modal" ng-disabled="reviewModal.closeBtnDisabled">close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog" aria-labelledby="feedbackModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="feedbackModalLabel">
+                    <strong>Please review your evaluation feedback below:</strong>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div ng-show="feedbackIsAvailable">
+                    <p style="font-size:16px;">
+                        The table below shows the score that you assigned the teacher on each job dimension compared to
+                        average scores assigned by teacher evaluation experts. Please review feedback carefully:
+                    </p>
+                    <table id="feedbackTable" class="table" style="margin-top:15px;">
+                        <thead>
+                        <tr>
+                            <th scope="col">Job Dimension</th>
+                            <th scope="col" style="text-align:center">Your evaluation</th>
+                            <th scope="col" style="text-align:center">Expert evaluation</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <th scope="row">Student Learning</th>
+                            <td>{{studentLearningRating}}</td>
+                            <td>{{expert.studentLearning}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Instructional Practice</th>
+                            <td>{{instructionalPracticeRating}}</td>
+                            <td>{{expert.instructionalPractice}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Professionalism</th>
+                            <td>{{professionalismRating}}</td>
+                            <td>{{expert.professionalism}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Overall</th>
+                            <td>{{overallRating}}</td>
+                            <td>{{expert.overall}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div ng-hide="feedbackIsAvailable">
+                    <h4 style="color:gray;text-align:center;">We're sorry, feedback is not available for this teacher.</h4>
+                    <br>
+                    <p ng-show="profile.offerTraining">Be careful not to mistake missing feedback for positive feedback! This DOES NOT mean your evaluation
+                    was accurate or inaccurate.</p>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color:#F0F0F0">
+                <span ng-show="feedbackModal.showCountDownLabel">Buttons will be enabled in {{ feedbackModal.feedbackModalDuration }} second(s)</span>
+                <button type="button" class="btn btn-secondary" style="background-color:#D6D6D6" data-dismiss="modal" ng-disabled="feedbackModal.feedbackModalBtnsDisabled">Return to evaluation</button>
+                <button type="button" class="btn btn-primary" ng-click="routeToNextPage()" data-dismiss="modal" ng-disabled="feedbackModal.feedbackModalBtnsDisabled">Continue</button>
+            </div>
+        </div>
+    </div>
+</div>
+<hr>
+<!--Teachers Dossiers: End-->
+<form name="evaluationForm">
+    <h4>After reviewing supervisor evaluations, please fill out the form below:</h4>
+    <!--Teacher recommendation-->
+    <div class="row" style="margin-top:50px;" ng-show="isRelative">
+        <div class="col-sm-12">
+            <p>After reviewing each teacher's dossier, I recommend that the board give tenure promotion to: <span
+                    style="color: red">*</span>
+                <label id="teacher1RadioBtnLabel" class="radio-inline"><input type="radio" id="teacher1RadioBtn"
+                                                                              name="optradio" ng-model="selectedTeacher"
+                                                                              value="1">Teacher 1</label>
+                <label style="margin-left:40px;" class="radio-inline"><input type="radio" id="teacher2RadioBtn"
+                                                                             name="optradio" ng-model="selectedTeacher"
+                                                                             value="2">Teacher 2</label>
+            </p>
+        </div>
+    </div>
+
+    <div ng-hide="isRelative">
+        <div class="row">
+            <div class="col-xs-12">
+                <p>
+                    Please rate the teacher on a scale of 1 to 7 (1: worst score, 7: best score) on each of the job
+                    dimensions
+                    below:
+                </p>
+            </div>
+        </div>
+        <div class="row jobFunctionRating">
+            <div class="col-sm-8">
+        <span>Student Learning:
+        <span style="color: red">*</span></span>
+            </div>
+            <div class="col-sm-4">
+                <input id="studentLearningSlider" type="text" data-slider-min="1" data-slider-max="7"
+                       data-slider-step="1"
+                       data-slider-value="0">
+            </div>
+        </div>
+        <div class="row jobFunctionRating">
+            <div class="col-sm-8">
+        <span>Instructional Practice:
+        <span style="color: red">*</span></span>
+            </div>
+            <div class="col-sm-4">
+                <input id="instructionalPracticeSlider" type="text" data-slider-min="1" data-slider-max="7"
+                       data-slider-step="1" data-slider-value="0">
+            </div>
+        </div>
+        <div class="row jobFunctionRating">
+            <div class="col-sm-8">
+        <span>Professionalism:
+        <span style="color: red">*</span></span>
+            </div>
+            <div class="col-sm-4">
+                <input id="professionalismSlider" type="text" data-slider-min="1" data-slider-max="7"
+                       data-slider-step="1"
+                       data-slider-value="0">
+            </div>
+        </div>
+        <div class="row jobFunctionRating">
+            <div class="col-sm-8">
+        <span>Overall:
+        <span style="color: red">*</span></span>
+            </div>
+            <div class="col-sm-4">
+                <input id="overallSlider" type="text" data-slider-min="1" data-slider-max="7" data-slider-step="1"
+                       data-slider-value="0">
+            </div>
+        </div>
+
+        <div class="row" ng-hide="isExpert || isPractice">
+            <div class="col-sm-10" style="margin-top:25px">
+                <p>I would recommend this teacher for tenure promotion: <span
+                        style="color: red">*</span>
+                    <label class="radio-inline"><input type="radio" name="optradio" value="Y" id="promoteYes"
+                                                       ng-model="promotionDecision">Yes</label>
+                    <label class="radio-inline"><input type="radio" name="optradio" value="N" id="promoteNo"
+                                                       ng-model="promotionDecision">No</label>
+                </p>
+            </div>
+        </div>
+    </div>
+    <!--Confidence slider 1-->
+    <div class="row" style="margin-top:40px" ng-hide="isPractice || isExpert">
+        <div class="col-sm-8">
+        <span>On the scale of 0 to 100, how confident are you that you made the right choice:
+        <span style="color: red">*</span></span>
+        </div>
+        <div class="col-sm-4">
+            <input id="absConfidenceSlider" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="5"
+                   data-slider-value="0">
+        </div>
+    </div>
+    <!--Confidence Slider 2-->
+    <div class="row" style="margin-top:20px" ng-hide="isPractice || isExpert">
+        <div class="col-sm-8">
+        <span>What percentage of people do you think would agree with your choice:
+        <span style="color: red">*</span></span>
+        </div>
+        <div class="col-sm-4">
+            <input id="relConfidenceSlider" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="5"
+                   data-slider-value="0">
+        </div>
+    </div>
+    <div class="row" style="margin-top:30px" ng-show="showAttentionCheck">
+        <p style="padding-top:5px;" for="attentionCheck" class="col-sm-4">Please type the following code in the box: {{attentionCheckCode}}</p>
+        <div class="col-sm-8 pull-right">
+            <input style="width:100px" class="form-control" id="attentionCheck" ng-model="attentionCheckInput">
+        </div>
+    </div>
+    <!--Submit-->
+    <div class="row" style="margin-top:50px;padding-right:30px;">
+        <div class="col-sm-2 col-sm-offset-10">
+            <button class="btn btn-primary pull-right" id="continueBtn" type="button" ng-click="saveAndContinue()">
+                Continue
+            </button>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,47 @@
+<style>
+    tr {
+        font-size: 12px;
+    }
+</style>
+<div class="row">
+    <h4>Please review your progress below</h4>
+    <hr>
+    <div class="col-md-8">
+        <div ng-show="showSubmit && !isExpert" class="alert alert-success" role="alert">
+            <strong>You are done!</strong> You can review your response to each step below by clicking on the edit
+            button. Once ready please click
+            <a href="{{qual_redirect_url}}" target="_blank"> here</a> to go back to Qualtrics to record survey completion.
+        </div>
+        <div ng-show="showSubmit && isExpert" class="alert alert-success" role="alert">
+            <strong>You are done!</strong> Thank you for your participation. You may review your responses below. Feel free to logout when done.
+        </div>
+        <div ng-hide="showSubmit" class="alert alert-warning" role="alert">
+            Looks like you still have some steps to complete. Please use the table below to review which tasks require
+            completion.
+        </div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Step</th>
+                <th scope="col">Status</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tbody ng-repeat="row in rows">
+            <tr>
+                <th scope="row">{{ row.display }}</th>
+                <td>{{ row.status }}
+                    <span ng-show="row.status=='Complete'" class="glyphicon glyphicon-ok" style="color:green"> </span>
+                    <span ng-show="row.status=='Not Started'" class="glyphicon glyphicon-remove-circle"
+                          style="color:orange"> </span>
+                </td>
+                <td>
+                    <a ng-show="row.status=='Complete'" ng-click="edit(row.id)"><span class="glyphicon glyphicon-edit"> Edit</span></a>
+                    <a ng-show="row.status=='Next' || row.status=='Not Started'" ng-click="edit(row.id)"><span
+                            class="glyphicon glyphicon-arrow-right"> Go</span></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

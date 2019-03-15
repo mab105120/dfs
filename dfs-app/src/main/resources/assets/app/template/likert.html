@@ -1,0 +1,14 @@
+<table class="table">
+    <thead class="thead-inverse">
+    <tr>
+        <th>Item</th>
+        <th class="text-center" ng-repeat="choice in choices">{{ choice.choice }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="item in items">
+        <td>{{ item.item }}</td>
+        <td class="text-center" ng-repeat="choice in choices"><input required type="radio" name="{{ item.code }}" ng-model="item.answer" ng-value="choice.value"> </td>
+    </tr>
+    </tbody>
+</table>

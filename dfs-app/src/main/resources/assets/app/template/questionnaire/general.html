@@ -1,0 +1,29 @@
+<h4>Please fill the form below to the best of your knowledge</h4>
+<hr>
+<form name="general">
+    <div class="form-group">
+        <label>Age <span style="color: red">*</span></label> </br>
+        <small class="form-text text-muted">Please enter your age</small>
+        <input class="form-control" type="number" min="0" ng-model="age" required>
+    </div>
+    <div class="form-group">
+        <label>Gender <span style="color: red">*</span></label> </br>
+        <small class="form-text text-muted">Please select the gender you best identify with</small>
+        <select class="form-control" ng-model="gender" ng-options="gender for gender in genderGroup" required> </select>
+    </div>
+    <div class="form-group">
+        <label>Education <span style="color: red">*</span></label> </br>
+        <small class="form-text text-muted">Please select you highest level of eduction</small>
+        <select class="form-control" ng-model="education" ng-options="education for education in eductionGroup" required> </select>
+    </div>
+    <div class="form-group">
+        <label>Education Experience<span style="color: red">*</span></label> </br>
+        <small class="form-text text-muted">Please select the option that best describes your education experience</small>
+        <select class="form-control" ng-model="educationExperience" ng-options="educationExperience for educationExperience in educationExperienceGroup" required> </select>
+    </div>
+    <div class="form-group">
+        <label>Which of the following best describes your current occupation? <span style="color: red">*</span></label> </br>
+        <select class="form-control" ng-model="division" ng-options="division for division in divisionGroup" required> </select>
+    </div>
+    <button type="submit" class="btn btn-primary pull-right" ng-disabled="general.$invalid" ng-click="submit()">Submit</button>
+</form>

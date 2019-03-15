@@ -1,0 +1,7 @@
+<h4>Please fill the form below to the best of your knowledge</h4>
+<hr>
+<form name="likert">
+    <likert items="jsdItems" choices="choices" ></likert>
+    <likert items="pfiItems" choices="choices" ></likert>
+    <button style="margin-top:50px;" id="submitBtn" type="button" class="btn btn-primary pull-right" ng-click="submit()" ng-disabled="likert.$invalid" ng-click="submit()">Submit</button>
+</form>

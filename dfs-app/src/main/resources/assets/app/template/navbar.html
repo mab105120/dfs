@@ -1,0 +1,21 @@
+<nav class="container-fluid navbar navbar-default" role="navigation">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+    </div>
+    <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-left">
+            <li><a ng-show="!vm.auth.isAuthenticated()" ui-sref="welcome">Welcome</a></li>
+            <li ng-show="vm.auth.isAuthenticated()"><a ui-sref="home">Home</a></li>
+            <li ng-show="vm.auth.isAuthenticated()"><a ui-sref="progress">My Progress</a></li>
+            <li ng-show="vm.auth.isAuthenticated()"><a ui-sref="contactus">Contact us</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li ng-show="vm.auth.isAuthenticated()"><p style="padding-top:15px;color:gray"> <strong>Hello {{ vm.auth.getUserId() }}</strong><p></p></li>
+            <li ng-show="vm.auth.isAuthenticated()"><a ng-click="logout()"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+        </ul>
+    </div>
+</nav>

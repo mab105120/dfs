@@ -1,0 +1,27 @@
+<h4>Contact us</h4>
+<hr>
+<div>
+    <form name="contactus">
+        <div class="form-group">
+            <label>Subject <span style="color: red">*</span></label> </br>
+            <small class="form-text text-muted">Please provide a breif description of your issue</small>
+            <input type="text" class="form-control" ng-model="subject" required>
+        </div>
+
+        <div class="form-group">
+            <label>Body <span style="color: red">*</span></label> </br>
+            <small class="form-text text-muted">Please enter a detailed description of your issue</small>
+            <textarea class="form-control" rows="3" id="body" ng-model="body" required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Email <span style="color: red">*</span></label> </br>
+            <small class="form-text text-muted">Please enter email address to reach you at</small>
+            <input type="email" class="form-control" ng-model="email" required>
+        </div>
+
+
+        <button type="submit" class="btn btn-primary pull-right" ng-disabled="contactus.$invalid" ng-click="submit()">Submit</button>
+
+    </form>
+</div>
