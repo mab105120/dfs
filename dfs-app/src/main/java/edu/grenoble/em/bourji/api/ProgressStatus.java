@@ -28,7 +28,8 @@ public enum ProgressStatus {
     EVALUATION_13(20),
     EVALUATION_14(21),
     EVALUATION_15(22),
-    COMPLETE(23);
+    COMPLETE(23),
+    PENDING_INVITE(24);
 
     private int priority;
 

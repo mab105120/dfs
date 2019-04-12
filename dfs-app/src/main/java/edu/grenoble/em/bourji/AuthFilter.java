@@ -6,6 +6,7 @@ import org.eclipse.jetty.http.HttpStatus;
 
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 
@@ -29,6 +30,7 @@ class AuthFilter implements ContainerRequestFilter {
             if (accessId == null || accessId.isEmpty()) {
                 containerRequestContext.abortWith(Response
                         .status(HttpStatus.FORBIDDEN_403)
+                        .type(MediaType.APPLICATION_JSON_TYPE)
                         .entity(new BadResponse().withMessage("Missing authorization header"))
                         .build());
                 return;
@@ -37,6 +39,7 @@ class AuthFilter implements ContainerRequestFilter {
             if(!accessId.startsWith("Bearer")) {
                 containerRequestContext.abortWith(Response
                         .status(HttpStatus.FORBIDDEN_403)
+                        .type(MediaType.APPLICATION_JSON_TYPE)
                         .entity(new BadResponse().withMessage("Authorization header missing Bearer"))
                         .build());
                 return;
@@ -47,6 +50,7 @@ class AuthFilter implements ContainerRequestFilter {
         } catch (JwkException e) {
             containerRequestContext.abortWith(Response
                     .status(HttpStatus.FORBIDDEN_403)
+                    .type(MediaType.APPLICATION_JSON_TYPE)
                     .entity(new BadResponse().withMessage("Authorization error: " + e.getMessage()))
                     .build());
         }

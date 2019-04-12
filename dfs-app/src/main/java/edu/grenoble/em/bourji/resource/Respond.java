@@ -2,6 +2,7 @@ package edu.grenoble.em.bourji.resource;
 
 import edu.grenoble.em.bourji.api.BadResponse;
 
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
@@ -13,6 +14,7 @@ class Respond {
         BadResponse response = new BadResponse().withMessage(errorMessage);
         return Response
                 .status(500)
+                .type(MediaType.APPLICATION_JSON_TYPE)
                 .entity(response)
                 .build();
     }

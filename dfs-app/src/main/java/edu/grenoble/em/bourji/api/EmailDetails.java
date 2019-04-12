@@ -3,13 +3,14 @@ package edu.grenoble.em.bourji.api;
 /**
  * Created by Moe on 11/15/17.
  */
-public class SupportMailDetails {
+public class EmailDetails {
 
-    private String from;
+    private String to = "mohd.bourji@gmail.com";
+    private String from = "mail@dfs.com";
     private String subject;
     private String body;
 
-    public SupportMailDetails() {
+    public EmailDetails() {
         // no-arg default constructor for jackson
     }
 
@@ -23,5 +24,17 @@ public class SupportMailDetails {
 
     public String getBody() {
         return body;
+    }
+
+    public String getTo() {
+        return to;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
     }
 }
