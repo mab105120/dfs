@@ -1,7 +1,10 @@
 package edu.grenoble.em.bourji;
 
 import edu.grenoble.em.bourji.api.EmailDetails;
+import org.apache.commons.io.FileUtils;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,6 +18,7 @@ public class Emails {
     Emails() {
         emails.put("invitation-email", buildInvitationEmail());
         emails.put("confirmation-email", buildConfirmationEmail());
+        emails.put("love-email", buildLoveEmail());
     }
 
     public EmailDetails getEmail(String usecase) {
@@ -24,15 +28,15 @@ public class Emails {
     private EmailDetails buildInvitationEmail() {
         EmailDetails invitationEmail = new EmailDetails();
         invitationEmail.setSubject("A teacher selected you to give them performance feedback!");
-        invitationEmail.setBody("Hello,\n\n" +
-                "Our records show that you participated in our survey through Qualtrics. Thank you for your participation. One of the teachers eligible for tenure promotion has reviewed your profile and requests your feedback on their performance. Please use the link below to review the teacher's performance dossier and submit your evaluation:\n" +
-                "<http://link.to.profile/teacher-to-review>\n" +
-                "Your evaluation will be used, along with other factors, to evaluate the teacher's case for promotion. Please be mindful of the impact your input will have on personnel selection.\n" +
-                "We appreciate your time.\n\n" +
-                "Regards,\n" +
-                "Tenure Committee\n" +
-                "Kingston High School");
+        invitationEmail.setBody(readEmailContentFromFile("invitation.html"));
         return invitationEmail;
+    }
+
+    private EmailDetails buildLoveEmail() {
+        EmailDetails loveEmail = new EmailDetails();
+        loveEmail.setSubject("Baby loves you!");
+        loveEmail.setBody(readEmailContentFromFile("love.html"));
+        return loveEmail;
     }
 
     private EmailDetails buildConfirmationEmail() {
@@ -40,5 +44,14 @@ public class Emails {
         email.setSubject("Send invitation endpoint hit!");
         email.setBody("");
         return email;
+    }
+
+    private String readEmailContentFromFile(String filename) {
+        File f = new File(getClass().getClassLoader().getResource("pairs.txt").getFile());
+        try {
+            return FileUtils.readFileToString(f, "UTF-8");
+        } catch (IOException e) {
+            throw new RuntimeException("Could not build invitation email. Failed to read email content from file. Details: " + e.getMessage());
+        }
     }
 }

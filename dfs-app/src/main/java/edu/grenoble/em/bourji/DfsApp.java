@@ -75,7 +75,7 @@ public class DfsApp extends Application<DfsConfig> {
         // register resources
         environment.jersey().register(new PerformanceReviewResource(performanceReviewCache));
         environment.jersey().register(new QuestionnaireResource(questionnaireDAO, statusDAO));
-        environment.jersey().register(new StatusResource(statusDAO, inviteDAO));
+        environment.jersey().register(new StatusResource(statusDAO));
         environment.jersey().register(new ActivityResource(activityDAO));
         environment.jersey().register(new CommunicationResource(config.getEmailConfiguration().getUsername(),
                 config.getEmailConfiguration().getPassword(), emails, inviteDAO));

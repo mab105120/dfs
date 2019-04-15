@@ -31,13 +31,13 @@
             <tr>
                 <th scope="row">{{ row.display }}</th>
                 <td>{{ row.status }}
-                    <span ng-show="row.status=='Complete'" class="glyphicon glyphicon-ok" style="color:green"> </span>
-                    <span ng-show="row.status=='Not Started'" class="glyphicon glyphicon-remove-circle"
+                    <span ng-show="row.status==='Complete'" class="glyphicon glyphicon-ok" style="color:green"> </span>
+                    <span ng-show="row.status==='Not Started'" class="glyphicon glyphicon-remove-circle"
                           style="color:orange"> </span>
                 </td>
                 <td>
-                    <a ng-show="row.status=='Complete'" ng-click="edit(row.id)"><span class="glyphicon glyphicon-edit"> Edit</span></a>
-                    <a ng-show="row.status=='Next' || row.status=='Not Started'" ng-click="edit(row.id)"><span
+                    <a ng-show="row.status==='Complete'" ng-click="edit(row.id)"><span class="glyphicon glyphicon-edit"> Edit</span></a>
+                    <a ng-show="row.status==='Next'" ng-click="edit(row.id)"><span
                             class="glyphicon glyphicon-arrow-right"> Go</span></a>
                 </td>
             </tr>

@@ -2,7 +2,7 @@ package edu.grenoble.em.bourji.resource;
 
 import edu.grenoble.em.bourji.Authenticate;
 import edu.grenoble.em.bourji.PerformanceReviewCache;
-import edu.grenoble.em.bourji.api.AbsoluteEvaluationPayload;
+import edu.grenoble.em.bourji.api.EvaluationPayload;
 import edu.grenoble.em.bourji.api.ProgressStatus;
 import edu.grenoble.em.bourji.db.dao.AbsoluteEvaluationDao;
 import edu.grenoble.em.bourji.db.dao.EvaluationActivityDAO;
@@ -47,7 +47,7 @@ public class AbsoluteEvaluationResource {
      */
     @POST
     @UnitOfWork
-    public Response addEvaluation(AbsoluteEvaluationPayload payload,
+    public Response addEvaluation(EvaluationPayload payload,
                                   @Context ContainerRequestContext requestContext) {
         // Add teacher evaluation
         AbsoluteEvaluation evaluation = payload.getRecommendation();

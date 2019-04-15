@@ -163,7 +163,7 @@
 <form name="evaluationForm">
     <h4>After reviewing supervisor evaluations, please fill out the form below:</h4>
     <!--Teacher recommendation-->
-    <div class="row" style="margin-top:50px;" ng-show="isRelative">
+    <div class="row" style="margin-top:50px;">
         <div class="col-sm-12">
             <p>After reviewing each teacher's dossier, I recommend that the board give tenure promotion to: <span
                     style="color: red">*</span>
@@ -177,11 +177,11 @@
         </div>
     </div>
 
-    <div ng-hide="isRelative">
+    <div>
         <div class="row">
             <div class="col-xs-12">
                 <p>
-                    Please rate the teacher on a scale of 1 to 7 (1: worst score, 7: best score) on each of the job
+                    Please rate the teacher on a scale of 1 to 100 (1: worst score, 100: best score) on each of the job
                     dimensions
                     below:
                 </p>
@@ -193,7 +193,7 @@
         <span style="color: red">*</span></span>
             </div>
             <div class="col-sm-4">
-                <input id="studentLearningSlider" type="text" data-slider-min="1" data-slider-max="7"
+                <input id="studentLearningSlider" type="text" data-slider-min="1" data-slider-max="100"
                        data-slider-step="1"
                        data-slider-value="0">
             </div>
@@ -204,7 +204,7 @@
         <span style="color: red">*</span></span>
             </div>
             <div class="col-sm-4">
-                <input id="instructionalPracticeSlider" type="text" data-slider-min="1" data-slider-max="7"
+                <input id="instructionalPracticeSlider" type="text" data-slider-min="1" data-slider-max="100"
                        data-slider-step="1" data-slider-value="0">
             </div>
         </div>
@@ -214,7 +214,7 @@
         <span style="color: red">*</span></span>
             </div>
             <div class="col-sm-4">
-                <input id="professionalismSlider" type="text" data-slider-min="1" data-slider-max="7"
+                <input id="professionalismSlider" type="text" data-slider-min="1" data-slider-max="100"
                        data-slider-step="1"
                        data-slider-value="0">
             </div>
@@ -225,12 +225,12 @@
         <span style="color: red">*</span></span>
             </div>
             <div class="col-sm-4">
-                <input id="overallSlider" type="text" data-slider-min="1" data-slider-max="7" data-slider-step="1"
+                <input id="overallSlider" type="text" data-slider-min="1" data-slider-max="100" data-slider-step="1"
                        data-slider-value="0">
             </div>
         </div>
 
-        <div class="row" ng-hide="isExpert || isPractice">
+        <div class="row">
             <div class="col-sm-10" style="margin-top:25px">
                 <p>I would recommend this teacher for tenure promotion: <span
                         style="color: red">*</span>
@@ -240,28 +240,6 @@
                                                        ng-model="promotionDecision">No</label>
                 </p>
             </div>
-        </div>
-    </div>
-    <!--Confidence slider 1-->
-    <div class="row" style="margin-top:40px" ng-hide="isPractice || isExpert">
-        <div class="col-sm-8">
-        <span>On the scale of 0 to 100, how confident are you that you made the right choice:
-        <span style="color: red">*</span></span>
-        </div>
-        <div class="col-sm-4">
-            <input id="absConfidenceSlider" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="5"
-                   data-slider-value="0">
-        </div>
-    </div>
-    <!--Confidence Slider 2-->
-    <div class="row" style="margin-top:20px" ng-hide="isPractice || isExpert">
-        <div class="col-sm-8">
-        <span>What percentage of people do you think would agree with your choice:
-        <span style="color: red">*</span></span>
-        </div>
-        <div class="col-sm-4">
-            <input id="relConfidenceSlider" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="5"
-                   data-slider-value="0">
         </div>
     </div>
     <div class="row" style="margin-top:30px" ng-show="showAttentionCheck">

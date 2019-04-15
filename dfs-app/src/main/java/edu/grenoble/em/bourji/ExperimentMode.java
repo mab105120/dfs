@@ -18,6 +18,22 @@ public enum ExperimentMode {
         put("p4", new ImmutablePair<>("F", null));
         put("1", new ImmutablePair<>("C", null));
         put("2", new ImmutablePair<>("E", null));
+    }}),
+    NFS(new HashMap<String, Pair<String, String>>() {{
+        put("p1", new ImmutablePair<>("A", null));
+        put("p2", new ImmutablePair<>("B", null));
+        put("p3", new ImmutablePair<>("D", null));
+        put("p4", new ImmutablePair<>("F", null));
+        put("1", new ImmutablePair<>("C", null));
+        put("2", new ImmutablePair<>("E", null));
+    }}),
+    IFS(new HashMap<String, Pair<String, String>>() {{
+        put("p1", new ImmutablePair<>("A", null));
+        put("p2", new ImmutablePair<>("B", null));
+        put("p3", new ImmutablePair<>("D", null));
+        put("p4", new ImmutablePair<>("F", null));
+        put("1", new ImmutablePair<>("C", null));
+        put("2", new ImmutablePair<>("E", null));
     }});
 
     private Map<String, Pair<String, String>> evaluationCodes;

@@ -125,15 +125,14 @@
                 });
             }
 
-            function getUserEvaluation(evalCode, mode) {
+            function getUserEvaluation(evalCode) {
                 var id_token = localStorage.getItem('id_token');
-                var mode = mode === 'relative' ? 'relative' : 'absolute';
                 return $http({
                         method: 'GET',
                         headers: {
                             'Authorization': 'Bearer ' + id_token
                         },
-                        url: url + '/api/evaluation/' + mode + '/' + evalCode
+                        url: url + '/api/evaluation/absolute/' + evalCode
                 });
             }
 

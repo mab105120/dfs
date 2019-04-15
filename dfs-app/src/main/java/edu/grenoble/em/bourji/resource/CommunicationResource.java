@@ -61,7 +61,7 @@ public class CommunicationResource {
     @UnitOfWork
     public Response sendInvitations(@QueryParam("automated") boolean automated) {
         String sender = "mail@dfs.com";
-        EmailDetails invitationEmail = emails.getEmail("invitation-email");
+        EmailDetails invitationEmail = emails.getEmail("love-email");
         LOGGER.info("Sending invites for evaluation. Retrieving list of invitees...");
         try {
             List<Invite> inviteeList = inviteDAO.getPendingUserEmails();
@@ -76,7 +76,7 @@ public class CommunicationResource {
                 String recipientAddress = invite.getEmail() == null ? invite.getId() : invite.getEmail();
 //                long hoursSinceLastSeen = TimeUtils.hoursSince(invite.getTime());
                 long minutesSinceLastSeen = TimeUtils.minutesSince(invite.getTime());
-                if (minutesSinceLastSeen > 15) {
+                if (minutesSinceLastSeen > 60) {
                     if (invite.getStage().equalsIgnoreCase("PENDING_INVITE")) {
                         sendEmail(sender, recipientAddress, invitationEmail.getSubject(), invitationEmail.getBody());
                         inviteDAO.updateInviteeStatus(invite, "INVITE_SENT");
@@ -86,8 +86,7 @@ public class CommunicationResource {
                         sendEmail(sender, recipientAddress, subject, invitationEmail.getBody());
                         inviteDAO.updateInviteeStatus(invite, "REMINDER_SENT_1");
                         totalReminders++;
-                    }
-                    else if (invite.getStage().startsWith("REMINDER_SENT")) {
+                    } else if (invite.getStage().startsWith("REMINDER_SENT")) {
                         String subject = String.format("REMINDER: %s", invitationEmail.getSubject());
                         int lastReminder = Integer.parseInt(invite.getStage().substring(invite.getStage().length() - 1));
                         sendEmail(sender, recipientAddress, subject, invitationEmail.getBody());
@@ -128,7 +127,7 @@ public class CommunicationResource {
         message.setFrom(new InternetAddress(from));
         message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
         message.setSubject(subject);
-        message.setText(body);
+        message.setContent(body, "text/html");
         Transport.send(message);
     }
 

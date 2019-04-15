@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by Moe on 4/11/18.
  */
-public class AbsoluteEvaluationPayload {
+public class EvaluationPayload {
 
     private AbsoluteEvaluation recommendation;
     private List<EvaluationActivity> activities;
@@ -16,7 +16,7 @@ public class AbsoluteEvaluationPayload {
     private String datetimeOut;
     private String mode;
 
-    public AbsoluteEvaluationPayload() {
+    public EvaluationPayload() {
         // no-arg default constructor for jackson
     }
 

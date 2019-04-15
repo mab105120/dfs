@@ -30,13 +30,20 @@
 
             $scope.rows = [];
 
+            function orderStatusRows(status1, status2) {
+                return status1.priority - status2.priority;
+            }
+            var status_priority = 0;
+
             if($scope.profile.mode !== 'EXPERT') {
                 $scope.rows.push(
                     {
+                        priority: status_priority++,
                         id: 'QUEST_DEMO',
                         display: 'General questionnaire'
                     },
                     {
+                        priority: status_priority++,
                         id: 'QUEST_EXP',
                         display: 'Professional experience questionnaire'
                     }
@@ -45,6 +52,7 @@
 
             if ($scope.profile.includeConfidenceScale)
                 $scope.rows.push({
+                     priority: status_priority++,
                      id: 'QUEST_CON',
                      display: 'Judgment confidence questionnaire'
              });
@@ -54,6 +62,7 @@
                 if(totalPracticeEvaluations == 0) return;
                 for(var i = 1; i <= totalPracticeEvaluations; i++) {
                     $scope.rows.push({
+                        priority: status_priority++,
                         id: 'EVALUATION_P' + i,
                         display: 'Teacher Evaluation (Practice) ' + i + ' / ' + totalPracticeEvaluations
                     })
@@ -65,6 +74,7 @@
                 for(i = 1; i <= totalEvaluations; i++) {
                     $scope.rows.push(
                         {
+                            priority: status_priority++,
                             id: 'EVALUATION_' + i,
                             display: 'Teacher Evaluation ' + i + ' / ' + totalEvaluations
                         }
@@ -74,6 +84,7 @@
 
             addPracticeEvaluationsToRows();
             addEvaluationsToRows();
+            $scope.rows.sort();
 
             appcon.getProgress()
             .then(function success(response) {
@@ -99,8 +110,19 @@
                     if(attention !== undefined && attention === 'false')
                         $scope.qual_redirect_url += '&term=attention';
                 }
+                adjustRowStatuses();
                 $scope.$parent.stopSpinner();
             }, handleFailure);
+
+            // Change the status of first uncompleted row to Next
+            function adjustRowStatuses() {
+                for (var i = 0; i < $scope.rows.length; i++) {
+                    if ($scope.rows[i].status === 'Not Started') {
+                        $scope.rows[i].status = 'Next';
+                        break;
+                    }
+                }
+            }
         }
 
         function handleFailure(response) {
