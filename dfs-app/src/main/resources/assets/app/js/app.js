@@ -19,6 +19,7 @@
     appraisal_app.controller('welcomeController', require('./controller/welcome.controller.js'));
     appraisal_app.controller('procedureController', require('./controller/procedure.controller.js'));
     appraisal_app.controller('tenureController', require('./controller/tenure.controller.js'));
+    appraisal_app.controller('scoringMatrixController', require('./controller/scoringmatrix.controller.js'));
     appraisal_app.controller('quesGeneralController', require('./controller/questionnaire/general.controller.js'));
     appraisal_app.controller('quesExperienceController', require('./controller/questionnaire/experience.controller.js'));
     appraisal_app.controller('questConfidenceController', require('./controller/questionnaire/confidence.controller.js'));

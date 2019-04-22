@@ -173,7 +173,7 @@
             else if ($scope.profile.relative || $scope.profile.mode === 'EXPERT')
                 $state.go('evaluation', {id: 1});
             else
-                $state.go('evaluation', {id : 'P1'});
+                $state.go('scoring-matrix');
         }
 
         function responseChanged(oldRes, newRes) {
