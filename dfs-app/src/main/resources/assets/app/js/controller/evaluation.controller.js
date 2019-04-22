@@ -14,7 +14,7 @@
         ];
 
     require('bootstrap-slider');
-    require('angular-timer');
+
     var _ = require('lodash');
 
     function evaluation_controller($scope, $state, $stateParams, $window, appcon, authService, toaster, $sce, profileService, $interval) {

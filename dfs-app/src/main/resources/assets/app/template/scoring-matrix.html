@@ -1,0 +1,233 @@
+<style>
+    tr {
+        font-size: 14px;
+    }
+    .job-function {
+        padding-left: 50px;
+    }
+    .heading {
+        margin-bottom: 30px;
+    }
+</style>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 heading">
+            <h3>Scoring Instructions</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <p>
+                On the next page you will be asked to use a 1-100 scale to evaluate teachers' performance on three job dimensions: Student Learning,
+                Instructional Practice, and Professionalism. To better understand how to assign scores for each
+                dimension please review the following details:
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 job-function">
+            <h5 id="headingOne">
+                Student Learning
+                <span>
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne"
+                            ng-click="collapseClick('sl')" aria-expanded="true" aria-controls="collapseOne"> {{ slExpandLabel }}</button>
+                </span>
+            </h5>
+            <div id="collapseOne" class="collapse" aria-labelledby="headingOne">
+                <div>
+                    <p>
+                        Tenure applicants must provide consistent evidence showing that all students, including those with special needs, perform competitively on state standard exams for academic qualifications.
+                    </p>
+                </div>
+                <div>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Evaluation</th>
+                            <th scope="col">Score</th>
+                            <th scope="col">Explanation</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td width="200px">Exceeds expectation</td>
+                            <td width="100px">75-100</td>
+                            <td>Multiple sources of evidence showing
+                                that virtually all students, including
+                                special populations, achieve substantial
+                                gains on standard exams</td>
+                        </tr>
+                        <tr>
+                            <td width="200px">Meets expectation</td>
+                            <td width="100px">50-75</td>
+                            <td>Multiple sources of evidence showing a
+                                majority of students, including special
+                                populations, achieve substantial gains
+                                on standard exams</td>
+                        </tr>
+                        <tr>
+                            <td width="200px">Doesn't fully meet expectation</td>
+                            <td width="100px">25-50</td>
+                            <td>Evidence showing a majority of
+                                students, including special populations,
+                                achieve gains on standard exams.</td>
+                        </tr>
+                        <tr>
+                            <td width="200px">Below expectation</td>
+                            <td width="100px">1-25</td>
+                            <td>Evidence that the majority of students
+                                do not achieve gains on standard exams.</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 job-function">
+            <h5 id="headingTwo">
+                Instructional Practice
+                <span>
+                    <button class="btn btn-link" type="button" data-toggle="collapse"
+                            ng-click="collapseClick('ip')"
+                            data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                        {{ ipExpandLabel }}
+                    </button>
+                </span>
+            </h5>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo">
+                <div>
+                    <p>Tenure applicants must provide consistent evidence indicating practice at the most effective level in the categories:
+                        • Planning and Preparation
+                        • Classroom Environment
+                        • Instruction</p>
+                </div>
+                <div>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Evaluation</th>
+                            <th scope="col">Score</th>
+                            <th scope="col">Explanation</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td width="200px">Exceeds expectation</td>
+                            <td width="100px">75-100</td>
+                            <td>Multiple sources of evidence indicating
+                                practice at the most effective level in the
+                                following categories:
+                                • Planning and Preparation
+                                • Classroom Environment
+                                • Instruction</td>
+                        </tr>
+                        <tr>
+                            <td width="200px">Meets expectation</td>
+                            <td width="100px">50-75</td>
+                            <td>Multiple sources of evidence showing a
+                                majority of students, including special
+                                populations, achieve substantial gains
+                                on standard exams</td>
+                        </tr>
+                        <tr>
+                            <td width="200px">Doesn't fully meet expectation</td>
+                            <td width="100px">25-50</td>
+                            <td>Evidence showing a majority of
+                                students, including special populations,
+                                achieve gains on standard exams.</td>
+                        </tr>
+                        <tr>
+                            <td width="200px">Below expectation</td>
+                            <td width="100px">1-25</td>
+                            <td>Evidence that the majority of students
+                                do not achieve gains on standard exams.</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 job-function">
+            <h5 id="headingThree">
+                Professionalism
+                <span>
+                    <button class="btn btn-link" type="button" data-toggle="collapse"
+                            ng-click="collapseClick('pf')"
+                            data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                        {{ pfExpandLabel }}
+                    </button>
+                </span>
+            </h5>
+            <div id="collapseThree" class="collapse" aria-labelledby="headingTwo">
+                <div>
+                    <p>Tenure applicants must provide consistent evidence of high level professionalism on activities including:
+                        • Professional Growth and Reflection
+                        • Collaboration and Engagement with
+                        the School Community
+                        • Communication with Families</p>
+                </div>
+                <div>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Evaluation</th>
+                            <th scope="col">Score</th>
+                            <th scope="col">Explanation</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td width="200px">Exceeds expectation</td>
+                            <td width="100px">75-100</td>
+                            <td>Multiple sources of evidence of
+                                professionalism at the highest level:
+                                • Professional Growth and Reflection
+                                • Collaboration and Engagement with
+                                the School Community
+                                • Communication with Families</td>
+                        </tr>
+                        <tr>
+                            <td width="200px">Meets expectation</td>
+                            <td width="100px">50-75</td>
+                            <td>MMultiple sources of evidence of effective
+                                professional contributions:
+                                • Professional Growth and Reflection
+                                • Collaboration and Engagement with
+                                the School Community
+                                • Communication with Families</td>
+                        </tr>
+                        <tr>
+                            <td width="200px">Doesn't fully meet expectation</td>
+                            <td width="100px">25-50</td>
+                            <td>Limited evidence of effective professional
+                                contributions, or evidence of inconsistent or
+                                inadequate professional contributions:
+                                • Professional Growth and Reflection
+                                • Collaboration and Engagement with
+                                the School Community
+                                • Communication with Families</td>
+                        </tr>
+                        <tr>
+                            <td width="200px">Below expectation</td>
+                            <td width="100px">1-25</td>
+                            <td>Negative evidence of professional
+                                contributions:
+                                • Professional Growth and Reflection
+                                • Collaboration and Engagement with
+                                the School Community
+                                • Communication with Families</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-sm-12">
+            <input type="checkbox" ng-click="confirm()"> I confirm that I have carefully read the details provided above.
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary pull-right" ng-disabled="pendingConfirmation" ng-click="submit()">Submit</button>
+</div>

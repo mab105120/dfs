@@ -38,6 +38,11 @@
             controller: 'procedureController',
             templateUrl: 'app/template/procedure.html'
           })
+          .state('scoring-matrix', {
+            url: '/scoring-matrix',
+            controller: 'scoringMatrixController',
+            templateUrl: 'app/template/scoring-matrix.html'
+          })
           .state('tenure', {
             url: '/tenure',
             controller: 'tenureController',
