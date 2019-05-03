@@ -26,7 +26,9 @@
 
             $scope.qual_redirect_url = localStorage.getItem('qual_redirect_url');
 
-            $scope.showSubmit = false;
+            $scope.complete = false;
+            $scope.inviteIsPending = false;
+            $scope.actionsRequired = false;
 
             $scope.rows = [];
 
@@ -50,13 +52,6 @@
                 );
             }
 
-            if ($scope.profile.includeConfidenceScale)
-                $scope.rows.push({
-                     priority: status_priority++,
-                     id: 'QUEST_CON',
-                     display: 'Judgment confidence questionnaire'
-             });
-
             function addPracticeEvaluationsToRows() {
                 var totalPracticeEvaluations = $scope.profile.practice;
                 if(totalPracticeEvaluations == 0) return;
@@ -70,15 +65,17 @@
             }
 
             function addEvaluationsToRows() {
-                var totalEvaluations = $scope.profile.evaluations;
-                for(i = 1; i <= totalEvaluations; i++) {
-                    $scope.rows.push(
-                        {
-                            priority: status_priority++,
-                            id: 'EVALUATION_' + i,
-                            display: 'Teacher Evaluation ' + i + ' / ' + totalEvaluations
-                        }
-                    );
+                if($scope.profile.mode === 'NFS' || $scope.profile.invitationSent) {
+                    var totalEvaluations = $scope.profile.evaluations;
+                    for(i = 1; i <= totalEvaluations; i++) {
+                        $scope.rows.push(
+                            {
+                                priority: status_priority++,
+                                id: 'EVALUATION_' + i,
+                                display: 'Teacher Evaluation ' + i + ' / ' + totalEvaluations
+                            }
+                        );
+                    }
                 }
             }
 
@@ -103,7 +100,15 @@
                         allCompleted = false;
                     }
                 });
-                $scope.showSubmit = allCompleted;
+                if (!allCompleted) {
+                    $scope.actionsRequired = true;
+                } else {
+                    if ($scope.profile.mode !== 'NFS' && $scope.profile.invitationPending) {
+                        $scope.inviteIsPending = true;
+                    } else {
+                        $scope.complete = true;
+                    }
+                }
 
                 if(allCompleted) {
                     var attention = localStorage.getItem('attentionCheck');

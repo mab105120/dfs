@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  * Created by Moe on 4/9/19.
@@ -25,6 +26,13 @@ public class Invite {
 
     public Invite() {
         // no-arg default constructor for hibernate
+    }
+
+    public Invite(String id, String stage, String email) {
+        this.id = id;
+        this.stage = stage;
+        this.email = email;
+        this.time = Timestamp.valueOf(LocalDateTime.now());
     }
 
     public String getId() {

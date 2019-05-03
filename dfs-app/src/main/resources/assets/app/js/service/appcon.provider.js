@@ -208,6 +208,18 @@
                 });
             }
 
+            function requestInvite(req) {
+                var id_token = localStorage.getItem('id_token');
+                return $http({
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + id_token
+                    },
+                    data: req,
+                    url: url + '/api/status/request-invite'
+                });
+            }
+
             return {
                 getReviews: getReviews,
                 getExpertEvaluation: getExpertEvaluation,
@@ -225,7 +237,8 @@
                 postLogin: postLogin,
                 postLogout: postLogout,
                 getProgress: getProgress,
-                sendEmail: sendEmail
+                sendEmail: sendEmail,
+                requestInvite: requestInvite,
             }
         };
 
