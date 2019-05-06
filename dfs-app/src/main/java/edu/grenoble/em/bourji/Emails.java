@@ -47,7 +47,8 @@ public class Emails {
     }
 
     private String readEmailContentFromFile(String filename) {
-        File f = new File(getClass().getClassLoader().getResource("pairs.txt").getFile());
+        String filepath = String.format("emails/%s", filename);
+        File f = new File(getClass().getClassLoader().getResource(filepath).getFile());
         try {
             return FileUtils.readFileToString(f, "UTF-8");
         } catch (IOException e) {

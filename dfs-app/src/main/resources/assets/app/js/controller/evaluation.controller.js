@@ -215,7 +215,7 @@
 
         $scope.saveAndContinue = function() {
             $scope.$parent.startSpinner();
-            var checkQuality = true;
+            var checkQuality = false;
             if(!authService.isAuthenticated()) {
                 toaster.pop('error', 'Error', 'You have to be logged in to perform this operation');
                 $scope.$parent.stopSpinner();
@@ -372,10 +372,13 @@
             $(".modal-backdrop").remove();
             var currentEval = parseInt($scope.currentEvaluation);
             if($scope.isPractice) {
-                if(currentEval < $scope.profile.practice)
-                    $state.go('evaluation', {id: 'P' + (currentEval + 1)});
+                if (currentEval === $scope.profile.practice) {
+                    if ($scope.profile.mode === 'NFS')
+                        $state.go('evaluation', {id: 1});
+                    else $state.go('invite');
+                }
                 else
-                    $state.go('evaluation', {id: 1});
+                    $state.go('evaluation', {id: 'P' + (currentEval + 1)});
             } else {
                 var nextEvaluationCode = parseInt($stateParams.id) + 1;
                 if(nextEvaluationCode > $scope.totalEvaluations) // reached the end of the experiment

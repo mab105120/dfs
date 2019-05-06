@@ -17,6 +17,10 @@ public class InviteDAO extends AbstractDAO<Invite> {
         super(sessionFactory);
     }
 
+    public void addInvite(Invite invite) {
+        persist(invite);
+    }
+
     public List getPendingUserEmails() {
         return criteria().add(Restrictions.ne("stage", "COMPLETE"))
                 .add(Restrictions.ne("stage", "REMINDER_SENT_4")).list();
@@ -30,5 +34,15 @@ public class InviteDAO extends AbstractDAO<Invite> {
 
     public Invite getInvitee(String id) {
         return get(id);
+    }
+
+    public boolean userIsInvited(String user) {
+        Invite invite = getInvitee(user);
+        return invite != null && !invite.getStage().equals("PENDING_INVITE");
+    }
+
+    public boolean isInvitationPending(String user) {
+        Invite invite = getInvitee(user);
+        return invite != null && invite.getStage().equals("PENDING_INVITE");
     }
 }

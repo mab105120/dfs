@@ -1,16 +1,16 @@
 package edu.grenoble.em.bourji.resource;
 
 import edu.grenoble.em.bourji.Authenticate;
+import edu.grenoble.em.bourji.api.InviteRequest;
 import edu.grenoble.em.bourji.api.Progress;
 import edu.grenoble.em.bourji.api.ProgressStatus;
+import edu.grenoble.em.bourji.db.dao.InviteDAO;
 import edu.grenoble.em.bourji.db.dao.StatusDAO;
+import edu.grenoble.em.bourji.db.pojo.Invite;
 import io.dropwizard.hibernate.UnitOfWork;
 import org.slf4j.Logger;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -26,9 +26,11 @@ public class StatusResource {
 
     private final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(StatusResource.class);
     private StatusDAO statusDAO;
+    private InviteDAO inviteDAO;
 
-    public StatusResource(StatusDAO statusDAO) {
+    public StatusResource(StatusDAO statusDAO, InviteDAO inviteDAO) {
         this.statusDAO = statusDAO;
+        this.inviteDAO = inviteDAO;
     }
 
     @GET
@@ -65,4 +67,23 @@ public class StatusResource {
         }
     }
 
+    @POST
+    @Path("/request-invite")
+    @UnitOfWork
+    public Response requestInvite(InviteRequest req, @Context ContainerRequestContext requestContext) {
+        String user = requestContext.getProperty("user").toString();
+        LOGGER.info("Received invite request from " + user);
+        try {
+            if (inviteDAO.getInvitee(user) != null) {
+                return Respond.respondWithError("This profile has already been added. No action required");
+            }
+            Invite invite = new Invite(user, "PENDING_INVITE", req.getEmail());
+            inviteDAO.addInvite(invite);
+            return Response.ok().status(Response.Status.CREATED).build();
+        } catch (Throwable e) {
+            String message = String.format("Failed to record invite request for %s. Error: %s", user, e.getMessage());
+            LOGGER.error(message);
+            return Respond.respondWithError(message);
+        }
+    }
 }

@@ -15,6 +15,8 @@ public class ParticipantProfile {
     private String feedback;
     private int duration;
     private ExperimentMode mode;
+    private boolean invitationSent;
+    private boolean invitationPending;
 
     public ParticipantProfile() {
         // Default no-arg constructor for Jackson
@@ -74,5 +76,21 @@ public class ParticipantProfile {
 
     public boolean isOfferTraining() {
         return offerTraining;
+    }
+
+    public void setInvitationSent(boolean invitationSent) {
+        this.invitationSent = invitationSent;
+    }
+
+    public boolean getInvitationSent() {
+        return this.invitationSent;
+    }
+
+    public void setInvitationPending(boolean invitationPending) {
+        this.invitationPending = invitationPending;
+    }
+
+    public boolean isInvitationPending() {
+        return this.invitationPending;
     }
 }

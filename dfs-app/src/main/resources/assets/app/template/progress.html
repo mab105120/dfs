@@ -7,15 +7,15 @@
     <h4>Please review your progress below</h4>
     <hr>
     <div class="col-md-8">
-        <div ng-show="showSubmit && !isExpert" class="alert alert-success" role="alert">
+        <div ng-show="complete" class="alert alert-success" role="alert">
             <strong>You are done!</strong> You can review your response to each step below by clicking on the edit
             button. Once ready please click
             <a href="{{qual_redirect_url}}" target="_blank"> here</a> to go back to Qualtrics to record survey completion.
         </div>
-        <div ng-show="showSubmit && isExpert" class="alert alert-success" role="alert">
-            <strong>You are done!</strong> Thank you for your participation. You may review your responses below. Feel free to logout when done.
+        <div ng-show="inviteIsPending" class="alert alert-info" role="alert">
+            Your profile is currently under review. If selected to provide performance feedback we will contact you by email. Thanks
         </div>
-        <div ng-hide="showSubmit" class="alert alert-warning" role="alert">
+        <div ng-show="actionsRequired" class="alert alert-warning" role="alert">
             Looks like you still have some steps to complete. Please use the table below to review which tasks require
             completion.
         </div>

@@ -1,0 +1,48 @@
+<style>
+    label {
+        margin: 5px;
+    }
+</style>
+<div class="container" ng-hide="inviteSent">
+    <div class="row">
+        <div class="col-sm-12">
+            <h3>We want to contact you!</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <p >{{ message }} <strong>If you agree review form below and click on Contact Me.</strong></p>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-sm-12">
+            <h4>IMPORTANT</h4>
+            <p>
+                Your email address in our system is: {{ user }}. If you would like us to use a different
+                email address please provide alternative address below to contact you, otherwise click on Contact Me.
+            </p>
+            <form name="inviteForm">
+                <div class="input-group">
+                    <input id="altEmailCheckBox" type="checkbox" ng-click="checkAlternativeEmail()"/>
+                    <label for="altEmailCheckBox">Use alternative email</label>
+                </div>
+                <div class="input-group" ng-show="useAlternativeEmail">
+                    <label for="altEmail">Enter alternative email</label>
+                    <input id="altEmail" type="email" name="alternativeEmail" ng-model="alternativeEmail" placeholder="Enter email address"/>
+                </div>
+                <div class="input-group" style="margin-top: 20px;">
+                    <button class="btn btn-success pull-right" ng-click="submit()">Contact Me</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="container" ng-show="inviteSent">
+    <div class="row">
+        <div class="col-sm-12">
+            <h3 style="color:green">Success!</h3>
+            <p>{{ thankYouMsg }} You may now <a ng-click="logout()">log out</a></p>
+        </div>
+    </div>
+</div>

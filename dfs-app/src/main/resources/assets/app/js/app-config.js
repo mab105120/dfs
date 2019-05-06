@@ -68,6 +68,11 @@
             controller: 'evaluationController',
             templateUrl: 'app/template/evaluation.html'
           })
+          .state('invite', {
+            url: '/invite',
+            controller: 'inviteController',
+            templateUrl: 'app/template/invite.html'
+          })
           .state('progress', {
             url: '/progress',
             controller: 'progressController',
