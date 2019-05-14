@@ -6,7 +6,9 @@ import edu.grenoble.em.bourji.api.Progress;
 import edu.grenoble.em.bourji.api.ProgressStatus;
 import edu.grenoble.em.bourji.db.dao.InviteDAO;
 import edu.grenoble.em.bourji.db.dao.StatusDAO;
+import edu.grenoble.em.bourji.db.pojo.InvitationStatus;
 import edu.grenoble.em.bourji.db.pojo.Invite;
+import edu.grenoble.em.bourji.db.pojo.Status;
 import io.dropwizard.hibernate.UnitOfWork;
 import org.slf4j.Logger;
 
@@ -79,11 +81,29 @@ public class StatusResource {
             }
             Invite invite = new Invite(user, "PENDING_INVITE", req.getEmail());
             inviteDAO.addInvite(invite);
+            statusDAO.add(new Status(user, "CONSENT", 0));
             return Response.ok().status(Response.Status.CREATED).build();
         } catch (Throwable e) {
             String message = String.format("Failed to record invite request for %s. Error: %s", user, e.getMessage());
             LOGGER.error(message);
             return Respond.respondWithError(message);
+        }
+    }
+
+    @GET
+    @Path("/invitation-status")
+    @UnitOfWork
+    public Response getInvitationStatus(@Context ContainerRequestContext req) {
+        String user = req.getProperty("user").toString();
+        try {
+            boolean invitePending = inviteDAO.isInvitationPending(user);
+            boolean inviteSent = inviteDAO.userIsInvited(user);
+            InvitationStatus invitationStatus = new InvitationStatus(invitePending, inviteSent);
+            return Response.ok(invitationStatus).build();
+        } catch (Throwable e) {
+            String msg = String.format("Failed to retrieve invitation status for %s. Error: %s", user, e.getMessage());
+            LOGGER.error(msg);
+            return Respond.respondWithError(msg);
         }
     }
 }

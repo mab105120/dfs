@@ -73,6 +73,11 @@
             controller: 'inviteController',
             templateUrl: 'app/template/invite.html'
           })
+          .state('group-att-check', {
+            url: '/group-att-check',
+            controller: 'groupCheckController',
+            templateUrl: 'app/template/group-att-check.html'
+          })
           .state('progress', {
             url: '/progress',
             controller: 'progressController',

@@ -6,8 +6,10 @@ import edu.grenoble.em.bourji.api.EvaluationPayload;
 import edu.grenoble.em.bourji.api.ProgressStatus;
 import edu.grenoble.em.bourji.db.dao.AbsoluteEvaluationDao;
 import edu.grenoble.em.bourji.db.dao.EvaluationActivityDAO;
+import edu.grenoble.em.bourji.db.dao.InviteDAO;
 import edu.grenoble.em.bourji.db.dao.StatusDAO;
 import edu.grenoble.em.bourji.db.pojo.AbsoluteEvaluation;
+import edu.grenoble.em.bourji.db.pojo.Invite;
 import edu.grenoble.em.bourji.db.pojo.Status;
 import io.dropwizard.hibernate.UnitOfWork;
 import org.slf4j.Logger;
@@ -17,6 +19,7 @@ import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Objects;
 
 /**
  * Created by Moe on 4/11/18.
@@ -31,11 +34,14 @@ public class AbsoluteEvaluationResource {
     private AbsoluteEvaluationDao dao;
     private EvaluationActivityDAO activityDao;
     private StatusDAO statusDao;
+    private InviteDAO inviteDAO;
 
-    public AbsoluteEvaluationResource(AbsoluteEvaluationDao dao, EvaluationActivityDAO activityDao, StatusDAO statusDAO) {
+    public AbsoluteEvaluationResource(AbsoluteEvaluationDao dao, EvaluationActivityDAO activityDao,
+                                      StatusDAO statusDAO, InviteDAO inviteDAO) {
         this.dao = dao;
         this.activityDao = activityDao;
         this.statusDao = statusDAO;
+        this.inviteDAO = inviteDAO;
     }
 
     /**
@@ -72,6 +78,11 @@ public class AbsoluteEvaluationResource {
             // Update status
             ProgressStatus status = ProgressStatus.valueOf("EVALUATION_" + evaluation.getEvaluationCode());
             statusDao.add(new Status(user, status.name(), nextSubmissionId));
+            if (Objects.equals(evaluation.getEvaluationCode(), "2")) {
+                Invite invite = inviteDAO.getInvitee(user);
+                if (invite != null)
+                    inviteDAO.updateInviteeStatus(invite, "COMPLETE");
+            }
         } catch (Throwable e) {
             return Respond.respondWithError("Unable to save response. Error: " + e.getMessage());
         }

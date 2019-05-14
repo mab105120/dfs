@@ -48,9 +48,11 @@
                 if($scope.useAlternativeEmail) {
                     if($scope.alternativeEmail === '') {
                         alert('Please enter email address to contact you');
+                        return;
                     } else {
                         if (!$scope.inviteForm.alternativeEmail.$valid) {
                             alert('The email address you entered is invalid. Please enter a valid address.');
+                            return;
                         } else {
                             email = $scope.alternativeEmail;
                         }

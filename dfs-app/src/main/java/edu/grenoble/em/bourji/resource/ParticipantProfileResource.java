@@ -1,9 +1,7 @@
 package edu.grenoble.em.bourji.resource;
 
 import edu.grenoble.em.bourji.Authenticate;
-import edu.grenoble.em.bourji.ExperimentMode;
 import edu.grenoble.em.bourji.ParticipantProfiles;
-import edu.grenoble.em.bourji.db.dao.InviteDAO;
 import edu.grenoble.em.bourji.db.dao.ParticipantProfileDAO;
 import edu.grenoble.em.bourji.db.pojo.ParticipantProfile;
 import io.dropwizard.hibernate.UnitOfWork;
@@ -17,8 +15,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Random;
 
-import static edu.grenoble.em.bourji.ParticipantProfiles.*;
-
 /**
  * Created by Moe on 4/18/18.
  */
@@ -28,11 +24,9 @@ import static edu.grenoble.em.bourji.ParticipantProfiles.*;
 public class ParticipantProfileResource {
 
     private ParticipantProfileDAO dao;
-    private InviteDAO inviteDAO;
 
-    public ParticipantProfileResource(ParticipantProfileDAO dao, InviteDAO inviteDAO) {
+    public ParticipantProfileResource(ParticipantProfileDAO dao) {
         this.dao = dao;
-        this.inviteDAO = inviteDAO;
     }
 
     /**
@@ -50,20 +44,9 @@ public class ParticipantProfileResource {
             if (profile == null) {
                 ParticipantProfiles newProfile = assignProfile();
                 dao.add(user, newProfile);
-                edu.grenoble.em.bourji.api.ParticipantProfile participantProfile = newProfile.getProfile();
-                if (newProfile != NFS) {
-                    participantProfile.setInvitationSent(false); // first sign-in
-                    participantProfile.setInvitationPending(false);
-                }
-                return Response.ok(participantProfile).build();
-            } else {
-                edu.grenoble.em.bourji.api.ParticipantProfile participantProfile = ParticipantProfiles.valueOf(profile.getProfile()).getProfile();
-                if (participantProfile.getMode() != ExperimentMode.NFS) {
-                    participantProfile.setInvitationSent(inviteDAO.userIsInvited(user));
-                    participantProfile.setInvitationPending(inviteDAO.isInvitationPending(user));
-                }
-                return Response.ok(participantProfile).build();
-            }
+                return Response.ok(newProfile.getProfile()).build();
+            } else
+                return Response.ok(ParticipantProfiles.valueOf(profile.getProfile()).getProfile()).build();
         } catch(Throwable e) {
             return Respond.respondWithError(e.getMessage());
         }
@@ -75,11 +58,11 @@ public class ParticipantProfileResource {
         int randomNumber = random.nextInt(3) + 1;
         switch (randomNumber) {
             case 1:
-                return NFS;
+                return ParticipantProfiles.NFS;
             case 2:
-                return DFS;
+                return ParticipantProfiles.DFS;
             case 3:
-                return IFS;
+                return ParticipantProfiles.IFS;
             default:
                 throw new RuntimeException("Can not assign profile");
         }

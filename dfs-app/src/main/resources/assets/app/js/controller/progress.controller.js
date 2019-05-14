@@ -13,8 +13,11 @@
         $scope.$parent.startSpinner();
         profileService.getProfile().then(function(response) {
             $scope.profile = response.data;
-            $scope.isExpert = $scope.profile.mode === 'EXPERT';
-            init();
+            appcon.getInvitationStatus().then(function(res) {
+                $scope.profile.invitationSent = res.data.invitationSent;
+                $scope.profile.invitationPending = res.data.invitationPending;
+                init();
+            }, handleFailure);
         }, handleFailure);
 
         function init() {
@@ -79,8 +82,19 @@
                 }
             }
 
+            function addConsentRequestToRows() {
+                if($scope.profile.mode !== 'NFS' && !$scope.profile.invitationSent) {
+                    $scope.rows.push({
+                        priority: status_priority++,
+                        id: 'CONSENT',
+                        display: 'Provide Consent'
+                    });
+                }
+            }
+
             addPracticeEvaluationsToRows();
             addEvaluationsToRows();
+            addConsentRequestToRows();
             $scope.rows.sort();
 
             appcon.getProgress()
@@ -147,6 +161,8 @@
                 $state.go('evaluation', {id: id.substr(id.indexOf('_') + 1)});
             } else if(id.startsWith('EVALUATION')) {
                 $state.go('evaluation', {id: parseInt(id.substr(id.indexOf('_') + 1))});
+            } else if(id.startsWith('CONSENT')) {
+                $state.go('invite');
             }
         }
     }
