@@ -23,7 +23,24 @@
         profileService.getProfile().then(
             function(response) {
                 $scope.profile = response.data;
-                init();
+                $scope.isPractice = false;
+                if($stateParams.id.toLowerCase().startsWith('p'))
+                    $scope.isPractice = true;
+                if ($scope.profile.mode === 'NFS' || $scope.isPractice)
+                    init();
+                else {
+                    appcon.groupAttentionCheckComplete().then(
+                        function(res) {
+                            var attCheckIsComplete = res.data;
+                            if(attCheckIsComplete === "true")
+                                init();
+                            else {
+                                $scope.$parent.stopSpinner();
+                                $state.go('group-att-check');
+                            }
+                        }, handleFailure
+                    )
+                }
             }, handleFailure
         );
 
@@ -76,10 +93,6 @@
             }
 
             initializeCurrentAndTotalEvaluationVars();
-
-            $scope.isPractice = false;
-            if($stateParams.id.toLowerCase().startsWith('p'))
-                $scope.isPractice = true;
 
             paintPage();
 

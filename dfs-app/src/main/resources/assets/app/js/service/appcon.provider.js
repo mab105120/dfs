@@ -220,6 +220,40 @@
                 });
             }
 
+            function getInvitationStatus() {
+                var id_token = localStorage.getItem('id_token');
+                return $http({
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + id_token,
+                    },
+                    url: url + '/api/status/invitation-status'
+                })
+            }
+
+            function recordGroupAttentionCheck(payload) {
+                var id_token = localStorage.getItem('id_token');
+                return $http({
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + id_token
+                    },
+                    data: payload,
+                    url: url + '/api/group-att-check'
+                });
+            }
+
+            function groupAttentionCheckComplete() {
+                var id_token = localStorage.getItem('id_token');
+                return $http({
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + id_token
+                    },
+                    url: url + '/api/group-att-check/is-complete'
+                });
+            }
+
             return {
                 getReviews: getReviews,
                 getExpertEvaluation: getExpertEvaluation,
@@ -239,6 +273,9 @@
                 getProgress: getProgress,
                 sendEmail: sendEmail,
                 requestInvite: requestInvite,
+                getInvitationStatus: getInvitationStatus,
+                recordGroupAttentionCheck: recordGroupAttentionCheck,
+                groupAttentionCheckComplete: groupAttentionCheckComplete
             }
         };
 

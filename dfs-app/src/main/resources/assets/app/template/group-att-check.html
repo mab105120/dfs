@@ -1,0 +1,33 @@
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <h4>Please fill the form below to the best of your knowledge</h4>
+            <hr>
+            <form name="attentionCheckForm">
+                <div class="form-group">
+                    <label>When did you complete your profile? <span style="color: red">*</span></label>
+                    <select class="form-control" ng-model="daysSinceComplete" ng-options="opt for opt in daysSinceCompletionOptions" required></select>
+                </div>
+
+                <div class="form-group">
+                    <label>Who invited you to submit this teacher evaluation? <span style="color: red">*</span></label>
+                    <select class="form-control" ng-model="inviter" ng-options="opt for opt in inviterOptions" required></select>
+                </div>
+
+                <div class="form-group">
+                    <label>What is the purpose of this evaluation? <span style="color: red">*</span></label></br>
+                    <small>i.e. Why are you being asked to submit this performance feedback evaluation</small>
+                    <select class="form-control" ng-model="purpose" ng-options="opt for opt in purposeOptions" required></select>
+                </div>
+
+                <div class="form-group">
+                    <label>I confirm that I understand the purpose of this evaluation and the effect my feedback will have on personnel decisions. I will read the teacher's profile carefully before submitting my final evaluation <span style="color: red">*</span></label>
+                    <select class="form-control" ng-model="confirmation" ng-options="opt for opt in confirmationOptions" required></select>
+                </div>
+
+                <button type="submit" class="btn btn-primary pull-right" ng-disabled="attentionCheckForm.$invalid" ng-click="submit()">Submit</button>
+
+            </form>
+        </div>
+    </div>
+</div>

@@ -24,6 +24,7 @@
     appraisal_app.controller('quesExperienceController', require('./controller/questionnaire/experience.controller.js'));
     appraisal_app.controller('questConfidenceController', require('./controller/questionnaire/confidence.controller.js'));
     appraisal_app.controller('inviteController', require('./controller/invite.controller.js'));
+    appraisal_app.controller('groupCheckController', require('./controller/group-att-check.controller.js'));
     appraisal_app.controller('evaluationController', require('./controller/evaluation.controller.js'));
     appraisal_app.controller('progressController', require('./controller/progress.controller.js'));
     appraisal_app.controller('contactUsController', require('./controller/contactus.controller.js'));

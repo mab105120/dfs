@@ -26,7 +26,7 @@ public class DfsApp extends Application<DfsConfig> {
 
     protected final HibernateBundle<DfsConfig> hibernate = new HibernateBundle<DfsConfig>(
             PerformanceReview.class, UserDemographic.class, UserExperience.class,
-            UserConfidence.class, RelativeEvaluation.class, Status.class, Activity.class, Invite.class,
+            UserConfidence.class, RelativeEvaluation.class, Status.class, Activity.class, Invite.class, GroupAttentionCheck.class,
             EvaluationActivity.class, AbsoluteEvaluation.class, ParticipantProfile.class, ExpertEvaluation.class) {
         @Override
         public DataSourceFactory getDataSourceFactory(DfsConfig configuration) {
@@ -72,6 +72,7 @@ public class DfsApp extends Application<DfsConfig> {
         AbsoluteEvaluationDao absEvalDao = new AbsoluteEvaluationDao(hibernate.getSessionFactory());
         ExpertEvaluationDAO expertEvaluationDAO = new ExpertEvaluationDAO(hibernate.getSessionFactory());
         ParticipantProfileDAO participantProfileDAO = new ParticipantProfileDAO(hibernate.getSessionFactory());
+        GroupAttentionCheckDAO groupAttentionCheckDAO = new GroupAttentionCheckDAO(hibernate.getSessionFactory());
         Emails emails = new Emails();
         // register resources
         environment.jersey().register(new PerformanceReviewResource(performanceReviewCache));
@@ -81,9 +82,10 @@ public class DfsApp extends Application<DfsConfig> {
         environment.jersey().register(new CommunicationResource(config.getEmailConfiguration().getUsername(),
                 config.getEmailConfiguration().getPassword(), emails, inviteDAO));
         environment.jersey().register(new ValidationResource(confidenceDAO, questionnaireDAO));
-        environment.jersey().register(new AbsoluteEvaluationResource(absEvalDao, evaluationActivityDAO, statusDAO));
-        environment.jersey().register(new ParticipantProfileResource(participantProfileDAO, inviteDAO));
+        environment.jersey().register(new AbsoluteEvaluationResource(absEvalDao, evaluationActivityDAO, statusDAO, inviteDAO));
+        environment.jersey().register(new ParticipantProfileResource(participantProfileDAO));
         environment.jersey().register(new ExpertEvaluationResource(expertEvaluationDAO));
+        environment.jersey().register(new GroupAttentionCheckResource(groupAttentionCheckDAO, statusDAO));
     }
 
     @Override

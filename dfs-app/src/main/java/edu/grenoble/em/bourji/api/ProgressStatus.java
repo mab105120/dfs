@@ -29,7 +29,9 @@ public enum ProgressStatus {
     EVALUATION_14(21),
     EVALUATION_15(22),
     COMPLETE(23),
-    PENDING_INVITE(24);
+    PENDING_INVITE(24),
+    ATT_CHECK_COMPLETE(25),
+    CONSENT(26);
 
     private int priority;
 
