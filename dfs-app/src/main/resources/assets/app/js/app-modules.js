@@ -4,6 +4,7 @@
         'auth0.auth0',
         'ui.router',
         'angularSpinner',
-        'toaster'
+        'toaster',
+        'angularjs-dropdown-multiselect'
     ];
 })();

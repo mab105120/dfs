@@ -31,6 +31,9 @@ public class DfsConfig extends Configuration {
     @NotNull
     private EmailConfiguration emailConfiguration;
 
+    @JsonProperty("invitation")
+    private InviteConfig inviteConfig;
+
     public DataSourceFactory getDataSourceFactory() {
         return dataSourceFactory;
     }
@@ -59,4 +62,7 @@ public class DfsConfig extends Configuration {
         return emailConfiguration;
     }
 
+    public InviteConfig getInviteConfig() {
+        return inviteConfig;
+    }
 }

@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" ng-show="!showFailMessage">
     <div class="row">
         <div class="col-sm-12">
             <h4>Please fill the form below to the best of your knowledge</h4>
@@ -21,6 +21,17 @@
                 </div>
 
                 <div class="form-group">
+                    <label>Why do you think you were invited to evaluate the teachers' job performance? <span style="color: red">*</span></label></br>
+                    <small>Select all that applies</small></br>
+                    <div ng-dropdown-multiselect="" options="reasons" selected-model="selectedReasons" extra-settings="multiSelectSettings"></div>
+                </div>
+
+                <div class="form-group">
+                    <label>Please explain briefly your choices from the previous question <span style="color: red">*</span></label></br>
+                    <textarea class="form-control" ng-model="explanation" required ></textarea>
+                </div>
+
+                <div class="form-group">
                     <label>I confirm that I understand the purpose of this evaluation and the effect my feedback will have on personnel decisions. I will read the teacher's profile carefully before submitting my final evaluation <span style="color: red">*</span></label>
                     <select class="form-control" ng-model="confirmation" ng-options="opt for opt in confirmationOptions" required></select>
                 </div>
@@ -28,6 +39,22 @@
                 <button type="submit" class="btn btn-primary pull-right" ng-disabled="attentionCheckForm.$invalid" ng-click="submit()">Submit</button>
 
             </form>
+        </div>
+    </div>
+</div>
+<div class="container" ng-show="showFailMessage">
+    <div class="row">
+        <div class="col-sm-12">
+            <h1 style="color:red">Sorry!</h1>
+            </br>
+            <p>
+                Your answers to the previous form failed an attention check. Consequently, you are disqualified
+                from continuing this exercise. We apologize.
+            </p>
+            </br>
+            <p>
+                Thank you for your time. You may now <a ng-click="logout()">logout</a>.
+            </p>
         </div>
     </div>
 </div>

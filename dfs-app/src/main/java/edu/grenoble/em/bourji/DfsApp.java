@@ -80,12 +80,12 @@ public class DfsApp extends Application<DfsConfig> {
         environment.jersey().register(new StatusResource(statusDAO, inviteDAO));
         environment.jersey().register(new ActivityResource(activityDAO));
         environment.jersey().register(new CommunicationResource(config.getEmailConfiguration().getUsername(),
-                config.getEmailConfiguration().getPassword(), emails, inviteDAO));
+                config.getEmailConfiguration().getPassword(), emails, inviteDAO, config.getInviteConfig()));
         environment.jersey().register(new ValidationResource(confidenceDAO, questionnaireDAO));
         environment.jersey().register(new AbsoluteEvaluationResource(absEvalDao, evaluationActivityDAO, statusDAO, inviteDAO));
         environment.jersey().register(new ParticipantProfileResource(participantProfileDAO));
         environment.jersey().register(new ExpertEvaluationResource(expertEvaluationDAO));
-        environment.jersey().register(new GroupAttentionCheckResource(groupAttentionCheckDAO, statusDAO));
+        environment.jersey().register(new GroupAttentionCheckResource(groupAttentionCheckDAO, statusDAO, participantProfileDAO, inviteDAO));
     }
 
     @Override

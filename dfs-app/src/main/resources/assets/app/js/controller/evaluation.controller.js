@@ -31,12 +31,14 @@
                 else {
                     appcon.groupAttentionCheckComplete().then(
                         function(res) {
-                            var attCheckIsComplete = res.data;
-                            if(attCheckIsComplete === "true")
+                            var status = res.data;
+                            if(status === "PASS")
                                 init();
                             else {
                                 $scope.$parent.stopSpinner();
-                                $state.go('group-att-check');
+                                if (status === "PENDING")
+                                    $state.go('group-att-check', { showFailMessage: false });
+                                else $state.go('group-att-check', { showFailMessage: true });
                             }
                         }, handleFailure
                     )
@@ -378,6 +380,16 @@
             }
         }
 
+        $scope.endPractice = function() {
+            $('#lastPracticeModal').modal('hide');
+            $(".modal-backdrop").remove();
+            if($scope.profile.mode === 'NFS') {
+                $state.go('evaluation', {id: 1});
+            } else {
+                $state.go('invite');
+            }
+        }
+
         $scope.routeToNextPage = function() {
             $window.scrollTo(0, 0); // scroll to top
             $('#feedbackModal').modal('hide');
@@ -385,10 +397,8 @@
             $(".modal-backdrop").remove();
             var currentEval = parseInt($scope.currentEvaluation);
             if($scope.isPractice) {
-                if (currentEval === $scope.profile.practice) {
-                    if ($scope.profile.mode === 'NFS')
-                        $state.go('evaluation', {id: 1});
-                    else $state.go('invite');
+                if (currentEval === $scope.profile.practice) { // last practice round
+                    $('#lastPracticeModal').modal();
                 }
                 else
                     $state.go('evaluation', {id: 'P' + (currentEval + 1)});

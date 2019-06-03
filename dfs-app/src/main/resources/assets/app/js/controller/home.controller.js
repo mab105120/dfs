@@ -15,6 +15,7 @@
     function home_controller($scope, $state, authService, appcon, toaster, profileService) {
         $scope.$parent.startSpinner();
         init();
+        $scope.home = true;
         function init() {
 
             if(!authService.isAuthenticated()) {
@@ -26,13 +27,22 @@
 
             profileService.getProfile().then(
                 function(response) {
+                    $scope.profile = response.data;
                     $scope.duration = response.data.duration;
                     $scope.isExpert = response.data.mode === 'EXPERT';
-                    appcon.getProgress()
-                    .then(function success(response) {
-                        if(response.data.completed.length !== 0)
-                            $scope.showAlert = true;
+                    appcon.getInvitationStatus().then(function success(res) {
+                        if (res.data.invitationSent) {
+                            $scope.home = false;
+                            $scope.invitationHome = true;
                             $scope.$parent.stopSpinner();
+                        } else {
+                            appcon.getProgress()
+                            .then(function success(response) {
+                                if(response.data.completed.length !== 0)
+                                    $scope.showAlert = true;
+                                    $scope.$parent.stopSpinner();
+                            }, handleFailure);
+                        }
                     }, handleFailure);
                 },
                 handleFailure
@@ -41,6 +51,10 @@
         $scope.start = function() {
             $state.go('procedure');
         };
+
+        $scope.continueFnc = function() {
+            $state.go('group-att-check', { showFailMessage: false });
+        }
 
         function handleFailure(response) {
             var error = response.data === null ? 'Server unreachable' : response.data.message;

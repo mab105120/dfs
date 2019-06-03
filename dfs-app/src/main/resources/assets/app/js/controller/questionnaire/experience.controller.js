@@ -60,12 +60,17 @@
         }
 
         $scope.titleGroup = [
-            'Contingent Worker',
-            'Analyst',
-            'Associate',
+            'Intern',
+            'Entry level',
+            'Analyst/Associate',
+            'Manager',
+            'Senior Manager',
+            'Director',
             'Vice President',
-            'Managing Director',
-            'Partner',
+            'Senior Vise President',
+            'C level executive (CIO, CTO, COO, CMO, etc.)',
+            'President or CEO',
+            'Owner',
             'Other'
         ];
 

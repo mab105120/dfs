@@ -19,7 +19,7 @@
     }
 </style>
 <div class="row" style="margin-top:30px" ng-cloak>
-    <div class="col-xs-12" ng-hide="isExpert">
+    <div class="col-xs-12">
         <div class="alert alert-success" role="alert" ng-show="isPractice">
             This is a practice round.
             <p class="pull-right" style="font-size:16px" ng-show="showTimer">
@@ -45,19 +45,11 @@
             </div>
         </div>
     </div>
-    <div class="col-sm-12" style="margin-bottom:30px;" ng-show="isRelative">
-        <p>The grid below is a representation of two teacher's dossiers, both of whom are eligible for tenure promotion.
-            To review
-            each teacher on a specific job function (Student learning, Instruction practice, or Professionalism) click
-            on the button labeled supervisor
-            next to each job function to view the supervisor's review of that teacher on the job function (<span
-                    style="color:#800000">Teacher names are masked to protect their identity</span>).
-            When done please choose which teacher you recommend for promotion and fill out the form below.</p>
-    </div>
     <div class="col-sm-12" style="margin-bottom:30px;" ng-show="!isRelative">
-        <p>The grid below is a representation of a teacher's dossier.
-            Please read ALL supervisor reviews of the teacher on EVERY job function by clicking on the button labeled supervisor.
-            To learn more about each job function click on button labeled More next to each job function below.
+        <p>The grid below is a representation of a teacher's performance profile.
+            Each profile is developed by two supervisors after reviewing the teacher in the classroom for an extended period of time.
+            To read a supervisor's review of the teacher's performance on a job function click on the Supervisor buttons below.
+            Please read ALL supervisor reviews of the teacher on EVERY job function.
             (<span
                     style="color:#800000">Teacher names are masked to protect their identity</span>).
             When done please answer the questions below based on your evaluation.</p>
@@ -75,89 +67,9 @@
 <eval job-function="Student Learning" job-function-code="SL" is-relative="isRelative"></eval>
 <eval job-function="Instructional Practice" job-function-code="IP" is-relative="isRelative"></eval>
 <eval job-function="Professionalism" job-function-code="PF" is-relative="isRelative"></eval>
-<!-- Modal -->
-<div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">
-                    <span class="glyphicon glyphicon-comment" style="font-size: 25px;"> </span>
-                    <strong>{{ modalTitle }}</strong>
-                </h5>
-            </div>
-            <div class="modal-body" data-ng-bind-html="modalBodyTrusted">
-            </div>
-            <div class="modal-footer" style="background-color:#F0F0F0">
-                <span ng-show="reviewModal.showCountDownLabel">Button will be enabled in {{reviewModal.modelCloseDuration}} seconds</span>
-                <button type="button" class="btn btn-secondary" style="background-color:#D6D6D6" data-dismiss="modal" ng-disabled="reviewModal.closeBtnDisabled">close</button>
-            </div>
-        </div>
-    </div>
-</div>
 
-<div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog" aria-labelledby="feedbackModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="feedbackModalLabel">
-                    <strong>Please review your evaluation feedback below:</strong>
-                </h4>
-            </div>
-            <div class="modal-body">
-                <div ng-show="feedbackIsAvailable">
-                    <p style="font-size:16px;">
-                        The table below shows the score that you assigned the teacher on each job dimension compared to
-                        average scores assigned by teacher evaluation experts. Please review feedback carefully:
-                    </p>
-                    <table id="feedbackTable" class="table" style="margin-top:15px;">
-                        <thead>
-                        <tr>
-                            <th scope="col">Job Dimension</th>
-                            <th scope="col" style="text-align:center">Your evaluation</th>
-                            <th scope="col" style="text-align:center">Expert evaluation</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <th scope="row">Student Learning</th>
-                            <td>{{studentLearningRating}}</td>
-                            <td>{{expert.studentLearning}}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Instructional Practice</th>
-                            <td>{{instructionalPracticeRating}}</td>
-                            <td>{{expert.instructionalPractice}}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Professionalism</th>
-                            <td>{{professionalismRating}}</td>
-                            <td>{{expert.professionalism}}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Overall</th>
-                            <td>{{overallRating}}</td>
-                            <td>{{expert.overall}}</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div ng-hide="feedbackIsAvailable">
-                    <h4 style="color:gray;text-align:center;">We're sorry, feedback is not available for this teacher.</h4>
-                    <br>
-                    <p ng-show="profile.offerTraining">Be careful not to mistake missing feedback for positive feedback! This DOES NOT mean your evaluation
-                    was accurate or inaccurate.</p>
-                </div>
-            </div>
-            <div class="modal-footer" style="background-color:#F0F0F0">
-                <span ng-show="feedbackModal.showCountDownLabel">Buttons will be enabled in {{ feedbackModal.feedbackModalDuration }} second(s)</span>
-                <button type="button" class="btn btn-secondary" style="background-color:#D6D6D6" data-dismiss="modal" ng-disabled="feedbackModal.feedbackModalBtnsDisabled">Return to evaluation</button>
-                <button type="button" class="btn btn-primary" ng-click="routeToNextPage()" data-dismiss="modal" ng-disabled="feedbackModal.feedbackModalBtnsDisabled">Continue</button>
-            </div>
-        </div>
-    </div>
-</div>
+
+
 <hr>
 <!--Teachers Dossiers: End-->
 <form name="evaluationForm">
@@ -242,3 +154,112 @@
         </div>
     </div>
 </form>
+
+<!-- Begin: Modals -->
+<!-- Supervisor review modal -->
+<div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    <span class="glyphicon glyphicon-comment" style="font-size: 25px;"> </span>
+                    <strong>{{ modalTitle }}</strong>
+                </h5>
+            </div>
+            <div class="modal-body" data-ng-bind-html="modalBodyTrusted">
+            </div>
+            <div class="modal-footer" style="background-color:#F0F0F0">
+                <span ng-show="reviewModal.showCountDownLabel">Button will be enabled in {{reviewModal.modelCloseDuration}} seconds</span>
+                <button type="button" class="btn btn-secondary" style="background-color:#D6D6D6" data-dismiss="modal" ng-disabled="reviewModal.closeBtnDisabled">close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Feedback modal -->
+<div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="feedbackModalLabel">
+                    <strong>Please review your evaluation feedback below:</strong>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div ng-show="feedbackIsAvailable">
+                    <p style="font-size:16px;">
+                        The table below shows the score that you assigned the teacher on each job dimension compared to
+                        average scores assigned by teacher evaluation experts. Please review feedback carefully:
+                    </p>
+                    <table id="feedbackTable" class="table" style="margin-top:15px;">
+                        <thead>
+                        <tr>
+                            <th scope="col">Job Dimension</th>
+                            <th scope="col" style="text-align:center">Your evaluation</th>
+                            <th scope="col" style="text-align:center">Expert evaluation</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <th scope="row">Student Learning</th>
+                            <td>{{studentLearningRating}}</td>
+                            <td>{{expert.studentLearning}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Instructional Practice</th>
+                            <td>{{instructionalPracticeRating}}</td>
+                            <td>{{expert.instructionalPractice}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Professionalism</th>
+                            <td>{{professionalismRating}}</td>
+                            <td>{{expert.professionalism}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Overall</th>
+                            <td>{{overallRating}}</td>
+                            <td>{{expert.overall}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div ng-hide="feedbackIsAvailable">
+                    <h4 style="color:gray;text-align:center;">We're sorry, feedback is not available for this teacher.</h4>
+                    <br>
+                    <p ng-show="profile.offerTraining">Be careful not to mistake missing feedback for positive feedback! This DOES NOT mean your evaluation
+                        was accurate or inaccurate.</p>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color:#F0F0F0">
+                <span ng-show="feedbackModal.showCountDownLabel">Buttons will be enabled in {{ feedbackModal.feedbackModalDuration }} second(s)</span>
+                <button type="button" class="btn btn-secondary" style="background-color:#D6D6D6" data-dismiss="modal" ng-disabled="feedbackModal.feedbackModalBtnsDisabled">Return to evaluation</button>
+                <button type="button" class="btn btn-primary" ng-click="routeToNextPage()" data-dismiss="modal" ng-disabled="feedbackModal.feedbackModalBtnsDisabled">Continue</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Last Practice round modal -->
+<div class="modal fade" id="lastPracticeModal" tabindex="-1" role="dialog" aria-labelledby="lastPracticeModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="lastPracticeModalLabel" style="color:green;">
+                    <span class="glyphicon glyphicon-ok" style="font-size: 25px;"> </span>
+                    <strong>End of Practice Rounds</strong>
+                </h5>
+            </div>
+            <div class="modal-body">
+                <p ng-show="profile.mode === 'NFS'">
+                    This was the last practice round. Hit continue to proceed to evaluation of actual teacher profiles.
+                </p>
+                <p ng-hide="profile.mode === 'NFS'">
+                    This was the last practice round. Hit continue to proceed.
+                </p>
+            </div>
+            <div class="modal-footer" style="background-color:#F0F0F0">
+                <button type="button" class="btn btn-primary" ng-click="endPractice()">Continue</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End: Modals -->

@@ -31,6 +31,7 @@ public enum ProgressStatus {
     COMPLETE(23),
     PENDING_INVITE(24),
     ATT_CHECK_COMPLETE(25),
+    ATT_CHECK_FAIL(25),
     CONSENT(26);
 
     private int priority;
