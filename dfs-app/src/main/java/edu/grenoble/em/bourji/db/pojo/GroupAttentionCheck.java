@@ -24,8 +24,14 @@ public class GroupAttentionCheck {
     private String inviter;
     @Column(name = "PURPOSE", nullable = false, length = 100)
     private String purpose;
+    @Column(name = "INVITATION_REASON", nullable = false, length = 1000)
+    private String invitationReasons;
+    @Column(name = "REASON_EXPLANATION", nullable = false, length = 1000)
+    private String reasonExplanation;
     @Column(name = "CONFIRMATION", nullable = false)
     private String confirmation;
+    @Column(name = "PASS", nullable = false)
+    private boolean pass;
 
     public GroupAttentionCheck() {
         // default no-arg constructor for hibernate
@@ -53,5 +59,21 @@ public class GroupAttentionCheck {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getInvitationReasons() {
+        return invitationReasons;
+    }
+
+    public String getReasonExplanation() {
+        return reasonExplanation;
+    }
+
+    public boolean isPass() {
+        return pass;
+    }
+
+    public void setPass(boolean pass) {
+        this.pass = pass;
     }
 }

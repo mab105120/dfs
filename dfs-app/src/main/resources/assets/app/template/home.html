@@ -3,51 +3,93 @@
         margin-bottom: 20px;
         font-size: 14px;
     }
+    .row {
+        margin-bottom: 20px;
+    }
 </style>
-<div class="row">
-    <div class="col-sm-8 col-sm-offset-2">
-        <div ng-show="showAlert" class="alert alert-info" role="alert">
-            Looks like you have already started. To review your progress and continue where you left off please
-            click <a ui-sref="progress">here.</a>
-        </div>
-        <h3>Hello!</h3>
-        <p>
-            Thank you for putting time aside to take part of this evaluation exercise. Your participation
-            will require approximately {{duration}} minutes. To review your progress, at any time during the exercise, click on <strong>My
-            Progress</strong> tab in the navigation bar above. To view terms and conditions please click <a data-toggle="modal" data-target="#termsModal">here</a>
-            </br>
-        </p>
-        <h5 ng-hide="isExpert" ng-cloak style="color:red"><strong>IMPORTANT:</strong> this application can detect if responses are provided randomly without
-            complying with the exercise requirements. In such cases, responses will be discarded and consequently
-            participants <strong>will not be compensated.</strong></h5>
-        </br>
-        <p>Please click the start button below when ready.</p>
-    </div>
-</div>
-<div class="row" style="margin-top:20px;">
-    <div class="col-sm-6 text-center col-sm-offset-3">
-        <button style="height:50px;width:90px;" class="btn btn-success" type="button" ng-click="start()">Start
-        </button>
-    </div>
-</div>
-<!-- Terms and conditions Modal -->
-<div class="modal fade" id="termsModal" tabindex="-1" role="dialog" aria-labelledby="termsModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="termsModalLabel">
-                    <strong>Terms and conditions</strong>
-                </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+<div ng-show="home" class="container">
+    <div class="row">
+        <div class="col-sm-8 col-sm-offset-2">
+            <div ng-show="showAlert" class="alert alert-info" role="alert">
+                Looks like you have already started. To review your progress and continue where you left off please
+                click <a ui-sref="progress">here.</a>
             </div>
-            <div class="modal-body">
-                All your responses will remain confidential
-                and will not be shared or used, outside the purpose of this exercise, without your explicit consent.
-                If, for whatever reason, you choose not to proceed with the exercise you are free to quit at anytime; in
-                such case your responses will be discarded.
+            <h3>Hello!</h3>
+            <p>
+                Thank you for putting time aside to take part of this evaluation exercise. Your participation
+                will require approximately {{duration}} minutes. To review your progress, at any time during the exercise, click on <strong>My
+                Progress</strong> tab in the navigation bar above. To view terms and conditions please click <a data-toggle="modal" data-target="#termsModal">here</a>
+                </br>
+            </p>
+            <h5 ng-hide="isExpert" ng-cloak style="color:red"><strong>IMPORTANT:</strong> this application can detect if responses are provided randomly without
+                complying with the exercise requirements. In such cases, responses will be discarded and consequently
+                participants <strong>will not be compensated.</strong></h5>
+            </br>
+            <p>Please click the start button below when ready.</p>
+        </div>
+    </div>
+    <div class="row" style="margin-top:20px;">
+        <div class="col-sm-6 text-center col-sm-offset-3">
+            <button style="height:50px;width:90px;" class="btn btn-success" type="button" ng-click="start()">Start
+            </button>
+        </div>
+    </div>
+    <!-- Terms and conditions Modal -->
+    <div class="modal fade" id="termsModal" tabindex="-1" role="dialog" aria-labelledby="termsModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="termsModalLabel">
+                        <strong>Terms and conditions</strong>
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    All your responses will remain confidential
+                    and will not be shared or used, outside the purpose of this exercise, without your explicit consent.
+                    If, for whatever reason, you choose not to proceed with the exercise you are free to quit at anytime; in
+                    such case your responses will be discarded.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div ng-show="invitationHome" class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-12" style="color:green">
+                    <h3><span><i class="glyphicon glyphicon-envelope" /></span> You have been invited!</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <p>
+                        {{
+                            profile.mode === 'DFS' ?
+                            'After reviewing your profile, two teachers, both eligible for tenure promotion, requested your feedback on their job performance.'
+                            : ''
+                        }}
+                        {{
+                            profile.mode === 'IFS' ?
+                            'After reviewing your profile, a supervisor requested your feedback on the job performance of two teachers eligible for tenure promotion.'
+                            : ''
+                        }}
+                        Next, you will be provided two teacher profiles containing reviews of the
+                        teacher performance on three job dimensions.
+                        These reviews were provided by the teacher's supervisors after observing the teachers in the classroom over an extended period of time.
+                        Please read each profile carefully before submitting your evaluation.
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 text-center col-sm-offset-3">
+                    <button style="height:50px;width:90px;" class="btn btn-success" type="button" ng-click="continueFnc()">Continue
+                    </button>
+                </div>
             </div>
         </div>
     </div>

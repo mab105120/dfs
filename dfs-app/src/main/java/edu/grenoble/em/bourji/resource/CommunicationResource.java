@@ -2,6 +2,7 @@ package edu.grenoble.em.bourji.resource;
 
 import edu.grenoble.em.bourji.Authenticate;
 import edu.grenoble.em.bourji.Emails;
+import edu.grenoble.em.bourji.InviteConfig;
 import edu.grenoble.em.bourji.TimeUtils;
 import edu.grenoble.em.bourji.api.EmailDetails;
 import edu.grenoble.em.bourji.db.dao.InviteDAO;
@@ -31,12 +32,15 @@ public class CommunicationResource {
     private final String password;
     private Emails emails;
     private InviteDAO inviteDAO;
+    private InviteConfig inviteConfig;
 
-    public CommunicationResource(String username, String password, Emails emails, InviteDAO inviteDAO) {
+    public CommunicationResource(String username, String password, Emails emails, InviteDAO inviteDAO,
+                                 InviteConfig inviteConfig) {
         this.username = username;
         this.password = password;
         this.emails = emails;
         this.inviteDAO = inviteDAO;
+        this.inviteConfig = inviteConfig;
     }
 
     @POST
@@ -61,7 +65,7 @@ public class CommunicationResource {
     @UnitOfWork
     public Response sendInvitations(@QueryParam("automated") boolean automated) {
         String sender = "mail@dfs.com";
-        EmailDetails invitationEmail = emails.getEmail("love-email");
+        EmailDetails invitationEmail = emails.getEmail("invitation-email");
         LOGGER.info("Sending invites for evaluation. Retrieving list of invitees...");
         try {
             List<Invite> inviteeList = inviteDAO.getPendingUserEmails();
@@ -74,9 +78,8 @@ public class CommunicationResource {
             int totalReminders = 0;
             for (Invite invite : inviteeList) {
                 String recipientAddress = invite.getEmail() == null ? invite.getId() : invite.getEmail();
-//                long hoursSinceLastSeen = TimeUtils.hoursSince(invite.getTime());
                 long minutesSinceLastSeen = TimeUtils.minutesSince(invite.getTime());
-                if (minutesSinceLastSeen > 60) {
+                if (minutesSinceLastSeen > inviteConfig.getTimelag()) {
                     if (invite.getStage().equalsIgnoreCase("PENDING_INVITE")) {
                         sendEmail(sender, recipientAddress, invitationEmail.getSubject(), invitationEmail.getBody());
                         inviteDAO.updateInviteeStatus(invite, "INVITE_SENT");
@@ -96,11 +99,6 @@ public class CommunicationResource {
                 }
             }
             LOGGER.info(String.format("Sent emails to qualified participants. New invites: %s | Reminders: %s", totalInvitesSent, totalReminders));
-            if (automated) {
-                LOGGER.info("Sending notification email to the boss...");
-                EmailDetails confirmEmail = emails.getEmail("confirmation-email");
-                sendEmail(sender, "mohd.bourji@gmail.com", confirmEmail.getSubject(), confirmEmail.getBody());
-            }
         } catch (Throwable e) {
             String message = "Failed to send invitations. Details: " + e.getMessage();
             LOGGER.error(message);

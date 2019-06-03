@@ -11,17 +11,15 @@
     function invite_controller($scope, profileService, authService, toaster, appcon) {
 
         var dfs_message = 'Thank you for participating in this exercise. A profile has been created using the information you provided and ' +
-                              'the results of your training rounds. Teachers, eligible for tenure promotion, will review your profile. If a teacher judges that your ' +
-                              'performance appraisal experience is relevant they will request your feedback on their performance. If selected we ' +
-                              'will send you an email with a link to the teacher\'s dossier where you can submit the final evaluation.';
+                              'the results of your training rounds. Teachers, eligible for tenure promotion, will review your profile and decide whether to invite you to provide feedback on their job performance. If selected we ' +
+                              ' will send you an email with a link to the teacher\'s dossier where you can submit the final evaluation.';
 
         var ifs_message = 'Thank you for participating in this exercise. A profile has been created using the information you provided and ' +
-                            'the results of your training rounds. Supervisors of teachers, eligible for tenure promotion, will review your profile. If a supervisor judges that your ' +
-                            'performance appraisal experience is relevant they will request your feedback . If selected we' +
-                            'will send you an email with a link to the teacher\'s dossier where you can submit the final evaluation.';
+                            'the results of your training rounds. Supervisors of teachers, eligible for tenure promotion, will review your profile decide whether to invite you to provide feedback on teachers\' job performance. If selected we' +
+                            ' will send you an email with a link to the teacher\'s dossier where you can submit the final evaluation.';
 
-        var dfs_thankYouMsg = "Thank you! Your profile is now available for teachers. If a teacher requests your feedback on their performance we will send you an invitation email."
-        var ifs_thankYouMsg = "Thank you! Your profile is now available for teacher supervisors. If a supervisor requests your feedback on one of their teacher performance we will send you an invitation by email."
+        var dfs_thankYouMsg = "Thank you! Your profile is now available for teachers. If a teacher requests your feedback on their performance we will send you an invitation email within the next 24hrs."
+        var ifs_thankYouMsg = "Thank you! Your profile is now available for teacher supervisors. If a supervisor requests your feedback on one of their teacher performance we will send you an invitation by email within the next 24hrs."
 
         profileService.getProfile().then(function success(res) {
             $scope.mode = res.data.mode;

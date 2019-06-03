@@ -17,8 +17,7 @@ public class Emails {
 
     Emails() {
         emails.put("invitation-email", buildInvitationEmail());
-        emails.put("confirmation-email", buildConfirmationEmail());
-        emails.put("love-email", buildLoveEmail());
+//        emails.put("confirmation-email", buildConfirmationEmail());
     }
 
     public EmailDetails getEmail(String usecase) {
@@ -28,15 +27,8 @@ public class Emails {
     private EmailDetails buildInvitationEmail() {
         EmailDetails invitationEmail = new EmailDetails();
         invitationEmail.setSubject("A teacher selected you to give them performance feedback!");
-        invitationEmail.setBody(readEmailContentFromFile("invitation.html"));
+        invitationEmail.setBody(getInvitationEmailBody());
         return invitationEmail;
-    }
-
-    private EmailDetails buildLoveEmail() {
-        EmailDetails loveEmail = new EmailDetails();
-        loveEmail.setSubject("Baby loves you!");
-        loveEmail.setBody(readEmailContentFromFile("love.html"));
-        return loveEmail;
     }
 
     private EmailDetails buildConfirmationEmail() {
@@ -54,5 +46,18 @@ public class Emails {
         } catch (IOException e) {
             throw new RuntimeException("Could not build invitation email. Failed to read email content from file. Details: " + e.getMessage());
         }
+    }
+
+    private String getInvitationEmailBody() {
+        return "<h3>Hello,</h3>\n" +
+                "<p>\n" +
+                "    Our records show that you participated in our survey through MTurk. Thank you for your participation.<br>\n" +
+                "    One of the teachers eligible for tenure promotion has reviewed your profile and requests your feedback on their performance.\n" +
+                "    Please click <a href=\"www.google.com\">here</a> to review the teacher's performance dossier and submit your evaluation.<br>\n" +
+                "    Your input will be considered for the final promotion decision. Please be mindful of the impact your decisions will have on personnel selection.\n" +
+                "</p>\n" +
+                "</br>\n" +
+                "<h4>We appreciate your time!</h4>\n" +
+                "<p>Regards,<br>Tenure Committee Kingston High School</p>";
     }
 }
