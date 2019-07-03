@@ -58,11 +58,11 @@ public class ParticipantProfileResource {
         int randomNumber = random.nextInt(3) + 1;
         switch (randomNumber) {
             case 1:
-                return ParticipantProfiles.NFS;
+                return ParticipantProfiles.IFS;
             case 2:
                 return ParticipantProfiles.DFS;
             case 3:
-                return ParticipantProfiles.IFS;
+                return ParticipantProfiles.NFS;
             default:
                 throw new RuntimeException("Can not assign profile");
         }

@@ -25,7 +25,7 @@
             appcon.postLogout()
             .then(function success(response) {
                 console.log('User successfully logged out!');
-                authService.logout();
+                authService.endSession();
                 $scope.stopSpinner();
             }, function failure(response) {
                 $scope.stopSpinner();

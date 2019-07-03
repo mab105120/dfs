@@ -26,8 +26,9 @@
 
 
             if(!authService.isAuthenticated()) {
-                alert('You are not logged in. You need to log in to view this page.');
-                authService.login();
+                alert('This application is meant for use with MTurk (a worker ID is required). You are not allowed to perform this operation if you are not an MTurk worker.');
+                $scope.$parent.endSpinner();
+                $state.go('welcome');
             }
 
             appcon.stepIsCompleted('QUEST_EXP')

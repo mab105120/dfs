@@ -19,7 +19,7 @@
         // Configure state provider for UI routes
         $stateProvider
           .state('welcome', {
-             url: '/',
+             url: '/:endSession?',
              controller: 'welcomeController',
              templateUrl: 'app/template/welcome.html'
           })

@@ -40,13 +40,4 @@
     appraisal_app.directive('focusOnShow', require('./directive/focusonshow.directive.js'));
     appraisal_app.directive('likert', require('./directive/likert.directive.js'));
 
-    // Handle authentication when application runs
-    appraisal_app.run(run);
-
-    run.$inject = ['authService'];
-
-    function run(authService) {
-        console.log('Handling authentication');
-        authService.handleAuthentication();
-    }
 })();

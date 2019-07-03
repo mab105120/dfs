@@ -62,8 +62,7 @@ public class DfsApp extends Application<DfsConfig> {
                 .withUserExperienceDao(new UserExperienceDAO(hibernate.getSessionFactory()))
                 .withUserConfidenceDao(new UserConfidenceDAO(hibernate.getSessionFactory()));
 
-        JwtTokenHelper tokenHelper = new JwtTokenHelper(config.getAuth0Domain(), config.getKid());
-        environment.jersey().register(new AuthFilter(tokenHelper));
+        environment.jersey().register(new AuthFilter());
         StatusDAO statusDAO = new StatusDAO(hibernate.getSessionFactory());
         InviteDAO inviteDAO = new InviteDAO(hibernate.getSessionFactory());
         ActivityDAO activityDAO = new ActivityDAO(hibernate.getSessionFactory());
@@ -86,6 +85,7 @@ public class DfsApp extends Application<DfsConfig> {
         environment.jersey().register(new ParticipantProfileResource(participantProfileDAO));
         environment.jersey().register(new ExpertEvaluationResource(expertEvaluationDAO));
         environment.jersey().register(new GroupAttentionCheckResource(groupAttentionCheckDAO, statusDAO, participantProfileDAO, inviteDAO));
+        environment.jersey().register(new MTurkResource(config.getAwsConfig(), inviteDAO, participantProfileDAO, config.getInviteConfig().getTimelag()));
     }
 
     @Override
