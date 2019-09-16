@@ -1,27 +1,37 @@
 <div class="container" ng-show="!showFailMessage">
     <div class="row">
         <div class="col-sm-12">
-            <h4>Please fill the form below to the best of your knowledge</h4>
+            <h4>Please fill out the form below</h4>
             <hr>
             <form name="attentionCheckForm">
                 <div class="form-group">
-                    <label>When did you complete your profile? <span style="color: red">*</span></label>
+                    <label>1) When did you complete your profile? <span style="color: red">*</span></label></br>
+                    <small>When did you complete the previous HIT before you were invited to this one.</small>
                     <select class="form-control" ng-model="daysSinceComplete" ng-options="opt for opt in daysSinceCompletionOptions" required></select>
                 </div>
 
                 <div class="form-group">
-                    <label>Who invited you to submit this teacher evaluation? <span style="color: red">*</span></label>
-                    <select class="form-control" ng-model="inviter" ng-options="opt for opt in inviterOptions" required></select>
+                    <label>2) Who invited you to submit this teacher evaluation? <span style="color: red">*</span></label></br>
+                    <small>If unsure, this information is available in the SUMMARY section of the invitation email.</small>
+                    <select id="questionTwoInput" ng-change="resetBorderColor(2)" class="form-control" ng-model="inviter" ng-options="opt for opt in inviterOptions" required></select>
+                    <p ng-show="inviter === 'I am not sure'" style="color:red">
+                        This answer will disqualify you from this exercise. If unsure about the purpose of the evaluation, this information
+                        can be found in the invitation email or <a href="#home"> here.</a> Please read closely.
+                    </p>
                 </div>
 
                 <div class="form-group">
-                    <label>What is the purpose of this evaluation? <span style="color: red">*</span></label></br>
-                    <small>i.e. Why are you being asked to submit this performance feedback evaluation</small>
-                    <select class="form-control" ng-model="purpose" ng-options="opt for opt in purposeOptions" required></select>
+                    <label>3) What is the purpose of this evaluation? <span style="color: red">*</span></label></br>
+                    <small>If unsure, this information is available in the SUMMARY section of the invitation email.</small>
+                    <select id="questionThreeInput" ng-change="resetBorderColor(3)" class="form-control" ng-model="purpose" ng-options="opt for opt in purposeOptions" required></select>
+                    <p ng-show="purpose === 'I am not sure'" style="color:red">
+                        This answer will disqualify you from this exercise. If unsure about the purpose of the evaluation, this information
+                        can be found in the invitation email or <a href="#home"> here.</a> Please read closely.
+                    </p>
                 </div>
 
                 <div class="form-group">
-                    <label>Why do you think you were invited to evaluate the teachers' job performance? <span style="color: red">*</span></label></br>
+                    <label>4) Why do you think you were invited to evaluate the teachers' job performance? <span style="color: red">*</span></label></br>
                     <small>Select all that applies</small></br>
                     <div ng-dropdown-multiselect="" options="reasons" selected-model="selectedReasons" extra-settings="multiSelectSettings"></div>
                 </div>

@@ -17,7 +17,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -66,11 +65,13 @@ public class MTurkResource {
     @Path("/invite")
     @POST
     @UnitOfWork
-    public Response invite() {
+    public Response invite(@QueryParam("force") Boolean force) {
         try {
+            LOGGER.info("Received request to invite participants. Force: " + force);
+            if (force == null) force = false;
             LOGGER.info("Getting invite list");
             List<Invite> inviteList = inviteDAO.getPendingUserEmails();
-            List<Invite> firstTimeInvites = getFirstTimersList(inviteList);
+            List<Invite> firstTimeInvites = getFirstTimersList(inviteList, force);
             List<Invite> reminderInvites = getReminderList(inviteList);
             LOGGER.info(String.format("Found %s on the invite list: first timers = %s, reminders = %s",
                     inviteList.size(), firstTimeInvites.size(), reminderInvites.size()));
@@ -111,12 +112,16 @@ public class MTurkResource {
         }
     }
 
-    private List<Invite> getFirstTimersList(List<Invite> inviteList) {
+    private List<Invite> getFirstTimersList(List<Invite> inviteList, boolean force) {
         List<Invite> qualifiedInvites = new ArrayList<>();
         for (Invite invite : inviteList) {
             long minutesSinceLastSeen = TimeUtils.minutesSince(invite.getTime());
-            if (invite.getStage().startsWith("PENDING_INVITE") && minutesSinceLastSeen > lag)
-                qualifiedInvites.add(invite);
+            if (invite.getStage().startsWith("PENDING_INVITE")) {
+                if (force)
+                    qualifiedInvites.add(invite);
+                else if (minutesSinceLastSeen > lag)
+                    qualifiedInvites.add(invite);
+            }
         }
         return qualifiedInvites;
     }
@@ -124,8 +129,7 @@ public class MTurkResource {
     private List<Invite> getReminderList(List<Invite> inviteList) {
         List<Invite> qualifiedInvites = new ArrayList<>();
         for (Invite invite : inviteList) {
-            long minutesSinceLastSeen = TimeUtils.minutesSince(invite.getTime());
-            if ((invite.getStage().startsWith("INVITE_SENT") || invite.getStage().startsWith("REMINDER")) && minutesSinceLastSeen > lag)
+            if ((invite.getStage().startsWith("INVITE_SENT") || invite.getStage().startsWith("REMINDER")))
                 qualifiedInvites.add(invite);
         }
         return qualifiedInvites;
@@ -135,10 +139,10 @@ public class MTurkResource {
         MTurkClient client = new MTurkClientProvider(config).getClient();
         for (ParticipantProfile participant : participants) {
             AssociateQualificationWithWorkerRequest req = AssociateQualificationWithWorkerRequest.builder()
-                    .qualificationTypeId(getQualificationTypeId(participant))
+                    .qualificationTypeId(config.getInviteQualId())
                     .workerId(participant.getId())
                     .integerValue(0)
-                    .sendNotification(true)
+                    .sendNotification(false)
                     .build();
             client.associateQualificationWithWorker(req);
         }
@@ -148,16 +152,11 @@ public class MTurkResource {
         return profileDAO.getParticipantProfiles(workerIds);
     }
 
-    private String getQualificationTypeId(ParticipantProfile participantProfile) {
-        String group = participantProfile.getProfile();
-        return Objects.equals(group, "DFS") ? config.getTeacherQualificationId() :
-                Objects.equals(group, "IFS") ? config.getSupervisorQualificationId() : null;
-    }
-
     private void sendNotification(List<ParticipantProfile> participants, boolean isReminder) {
         MTurkClient client = new MTurkClientProvider(config).getClient();
-        String inviteMessage = "You are invited to a follow up HIT (Duration: 3 minutes | Compensation: $2)";
-        String subject = isReminder ? "REMINDER: " + inviteMessage : inviteMessage;
+        String inviteSubject = "You are invited to a follow up HIT (Pay: $2 | Time: 3 mins)";
+        String reminderSubject = "A HIT is waiting for you! (Pay: $2 | Time: 3 mins)";
+        String subject = isReminder ? "REMINDER: " + reminderSubject : inviteSubject;
         List<String> dfsWorkerIds = filterProfiles(participants, "DFS")
                 .stream().map(ParticipantProfile::getId).collect(Collectors.toList());
         List<String> ifsWorkerIds = filterProfiles(participants, "IFS")
@@ -187,22 +186,23 @@ public class MTurkResource {
 
     private String getDfsInviteMessage() {
         return String.format(getInviteMessage(),
-                "After reviewing your profile two teachers invited you to provide appraisal feedback on their performance.",
-                "Kingston High School - Teacher Invite");
+                "After reviewing your profile, along with other profiles, two teachers selected you to provide appraisal feedback on their performance.",
+                "Kingston High School - Evaluation Invite", "Teacher");
     }
 
     private String getIfsInviteMessage() {
         return String.format(getInviteMessage(),
-                "After reviewing your profile, a teacher supervisor invited you to provide appraisal feedback on two of their teachers' performance.",
-                "Kingston High School - Supervisor Invite");
+                "After reviewing your profile, along with other profiles, a teacher supervisor selected you to provide appraisal feedback on two of their teachers' performance.",
+                "Kingston High School - Evaluation Invite", "Teacher Supervisor");
     }
 
     private String getInviteMessage() {
-        return "Hello\nYou have participated in a HIT titled 'Kingston High School - Teacher Evaluation'. As a reminder, the tenure board at Kingston High School " +
-                "is soliciting outside input for their tenure promotion process. In the previous HIT an anonymous profile was created " +
-                "for you based on your performance experience and training rounds. %s\n" +
-                "Please search for and complete HIT named '%s'. You have been given the proper qualifications to participate in that HIT. " +
-                "The HIT takes 3 minutes and pays $2.\n" +
+        return "Hello,\nYou have participated in a HIT titled 'Kingston High School - Teacher Evaluation'. " +
+                "In that HIT, you were asked to help evaluate job performance of teachers eligible for tenure promotion. " +
+                "At the end of the HIT an anonymous profile was created " +
+                "for you based on your experience with providing job reviews and your performance on the training rounds. %s\n" +
+                "In your worker dashboard, please search for and complete HIT named '%s'. You have been given the proper qualifications to participate in that HIT. " +
+                "The HIT takes 3 minutes and pays $2.\n\nSUMMARY:\nInviter: %s\nEvaluation Purpose: Tenure Promotion\n----\n" +
                 "Thank you";
     }
 }

@@ -230,7 +230,7 @@
 
         $scope.saveAndContinue = function() {
             $scope.$parent.startSpinner();
-            var checkQuality = false;
+            var checkQuality = true;
             if(!authService.isAuthenticated()) {
                 toaster.pop('error', 'Error', 'You have to be logged in to perform this operation');
                 $scope.$parent.stopSpinner();

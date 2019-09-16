@@ -44,6 +44,14 @@ public class StatusDAO extends AbstractDAO<Status> {
         persist(s);
     }
 
+    public int numberOfCompletedProfile(String group) {
+        Criteria cr = currentSession().createCriteria(Status.class)
+                .add(Restrictions.eq("status", "EVALUATION_2"));
+        List<Status> statuses = cr.list();
+        return statuses.stream().filter(status -> status.getProfile().getProfile().equalsIgnoreCase(group))
+                .collect(Collectors.toList()).size();
+    }
+
     public boolean stepCompleted(String user, ProgressStatus status) {
         Criteria cr = currentSession().createCriteria(Status.class)
                 .add(Restrictions.eq("user", user))

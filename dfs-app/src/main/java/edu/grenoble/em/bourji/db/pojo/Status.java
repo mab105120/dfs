@@ -25,6 +25,9 @@ public class Status implements Serializable {
     @Id
     @Column(name = "SUBMISSION_ID", nullable = false, unique = true)
     private int submissionId;
+    @ManyToOne()
+    @JoinColumn(name = "ID", insertable=false, updatable=false)
+    private ParticipantProfile profile;
 
     public Status() {
         // no-arg default constructor for hibernate
@@ -51,6 +54,10 @@ public class Status implements Serializable {
 
     public int getSubmissionId() {
         return submissionId;
+    }
+
+    public ParticipantProfile getProfile() {
+        return profile;
     }
 
     public static class UniqueIdentifier implements Serializable {

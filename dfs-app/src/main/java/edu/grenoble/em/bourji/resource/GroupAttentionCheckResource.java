@@ -20,6 +20,7 @@ import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 import static edu.grenoble.em.bourji.db.pojo.AttentionCheckStatus.PASS;
 import static edu.grenoble.em.bourji.db.pojo.AttentionCheckStatus.PENDING;
@@ -96,6 +97,22 @@ public class GroupAttentionCheckResource {
             String msg = String.format("Could not retrieve group attention check status for %s", user);
             LOGGER.info(msg);
             return Respond.respondWithError(msg);
+        }
+    }
+
+    @POST
+    @Path("/forgive")
+    @UnitOfWork
+    public Response forgive(List<String> ids) {
+        try {
+            for(String id: ids) {
+                groupAttentionCheckDAO.delete(id);
+                inviteDAO.updateInviteeStatus(inviteDAO.getInvitee(id), "FORGIVEN");
+            }
+            return Response.ok().build();
+        } catch (Throwable e) {
+            LOGGER.info("Could not forgive users");
+            return Respond.respondWithError("Could not forgive users");
         }
     }
 

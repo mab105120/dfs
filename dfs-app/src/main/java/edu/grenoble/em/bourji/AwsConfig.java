@@ -10,21 +10,24 @@ public class AwsConfig {
     private final String accessId;
     private final String secretKey;
     private final String endpoint;
-    private final String teacherQualificationId;
-    private final String supervisorQualificationId;
+    private final String inviteQualId;
+    private final String evaluationCompleteQualId;
+    private final String inviteCompleteQualId;
 
     @JsonCreator
     public AwsConfig(
             @JsonProperty(value = "accessId", required = true) String accessId,
             @JsonProperty(value = "secretKey", required = true) String secretKey,
             @JsonProperty(value = "endpoint", required = true) String endpoint,
-            @JsonProperty(value = "teacherQualificationId", required = true) String teacherQualificationId,
-            @JsonProperty(value = "supervisorQualificationId", required = true) String supervisorQualificationId) {
+            @JsonProperty(value = "inviteQualId", required = true) String inviteQualId,
+            @JsonProperty(value = "evaluationCompleteQualId", required = true) String evaluationCompleteQualId,
+            @JsonProperty(value = "inviteCompleteQualId", required = true) String inviteCompleteQualId) {
         this.accessId = accessId;
         this.secretKey = secretKey;
         this.endpoint = endpoint;
-        this.teacherQualificationId = teacherQualificationId;
-        this.supervisorQualificationId = supervisorQualificationId;
+        this.inviteQualId = inviteQualId;
+        this.evaluationCompleteQualId = evaluationCompleteQualId;
+        this.inviteCompleteQualId = inviteCompleteQualId;
     }
 
     public String getAccessId() {
@@ -39,11 +42,15 @@ public class AwsConfig {
         return endpoint;
     }
 
-    public String getTeacherQualificationId() {
-        return teacherQualificationId;
+    public String getInviteQualId() {
+        return inviteQualId;
     }
 
-    public String getSupervisorQualificationId() {
-        return supervisorQualificationId;
+    public String getInviteCompleteQualId() {
+        return inviteCompleteQualId;
+    }
+
+    public String getEvaluationCompleteQualId() {
+        return evaluationCompleteQualId;
     }
 }
