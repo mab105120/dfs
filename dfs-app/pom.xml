@@ -84,6 +84,12 @@
             <artifactId>commons-io</artifactId>
             <version>2.6</version>
         </dependency>
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>mturk</artifactId>
+            <version>2.7.25</version>
+        </dependency>
+
     </dependencies>
 
     <build>

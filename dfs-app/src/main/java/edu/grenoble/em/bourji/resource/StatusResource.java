@@ -1,6 +1,6 @@
 package edu.grenoble.em.bourji.resource;
 
-import edu.grenoble.em.bourji.Authenticate;
+import edu.grenoble.em.bourji.*;
 import edu.grenoble.em.bourji.api.InviteRequest;
 import edu.grenoble.em.bourji.api.Progress;
 import edu.grenoble.em.bourji.api.ProgressStatus;
@@ -11,7 +11,11 @@ import edu.grenoble.em.bourji.db.pojo.Invite;
 import edu.grenoble.em.bourji.db.pojo.Status;
 import io.dropwizard.hibernate.UnitOfWork;
 import org.slf4j.Logger;
+import software.amazon.awssdk.services.mturk.MTurkClient;
+import software.amazon.awssdk.services.mturk.model.AssociateQualificationWithWorkerRequest;
+import software.amazon.awssdk.services.mturk.model.AssociateQualificationWithWorkerResponse;
 
+import javax.mail.MessagingException;
 import javax.ws.rs.*;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
@@ -29,10 +33,14 @@ public class StatusResource {
     private final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(StatusResource.class);
     private StatusDAO statusDAO;
     private InviteDAO inviteDAO;
+    private final AwsConfig awsConfig;
+    private final EmailConfiguration emailConfig;
 
-    public StatusResource(StatusDAO statusDAO, InviteDAO inviteDAO) {
+    public StatusResource(StatusDAO statusDAO, InviteDAO inviteDAO, AwsConfig config, EmailConfiguration emailConfig) {
         this.statusDAO = statusDAO;
         this.inviteDAO = inviteDAO;
+        this.awsConfig = config;
+        this.emailConfig = emailConfig;
     }
 
     @GET
@@ -82,11 +90,34 @@ public class StatusResource {
             Invite invite = new Invite(user, "PENDING_INVITE", req.getEmail());
             inviteDAO.addInvite(invite);
             statusDAO.add(new Status(user, "CONSENT", 0));
+            LOGGER.info(String.format("Assigning Stage 1 complete qualification to %s", user));
+            assignEvalCompleteQual(user);
             return Response.ok().status(Response.Status.CREATED).build();
         } catch (Throwable e) {
             String message = String.format("Failed to record invite request for %s. Error: %s", user, e.getMessage());
             LOGGER.error(message);
             return Respond.respondWithError(message);
+        }
+    }
+
+    private void assignEvalCompleteQual(String workerId) throws MessagingException {
+        String qualId = awsConfig.getEvaluationCompleteQualId();
+        MTurkClient client = new MTurkClientProvider(awsConfig).getClient();
+        AssociateQualificationWithWorkerRequest req = AssociateQualificationWithWorkerRequest.builder()
+                .qualificationTypeId(qualId)
+                .workerId(workerId)
+                .integerValue(0)
+                .sendNotification(false)
+                .build();
+        AssociateQualificationWithWorkerResponse res = client.associateQualificationWithWorker(req);
+        if (res.sdkHttpResponse().statusCode() != 200) {
+            int statusCode = res.sdkHttpResponse().statusCode();
+            String statusText = res.sdkHttpResponse().statusText().orElse("");
+            new EmailService(emailConfig).sendEmail(
+                    "mohd.bourji@gmail.com",
+                    "Failed to assign Profile Complete qualification",
+                    String.format("Failed to assign qual: %s to worker Id: %s. Status code: %s, status text: %s", qualId, workerId, statusCode, statusText)
+            );
         }
     }
 
@@ -106,4 +137,12 @@ public class StatusResource {
             return Respond.respondWithError(msg);
         }
     }
+
+    @GET
+    @Path("/completed-profiles-count")
+    @UnitOfWork
+    public Response getCompletedProfilesCount(@QueryParam("profile") String groupProfile) {
+        return Response.ok(statusDAO.numberOfCompletedProfile(groupProfile)).build();
+    }
+
 }

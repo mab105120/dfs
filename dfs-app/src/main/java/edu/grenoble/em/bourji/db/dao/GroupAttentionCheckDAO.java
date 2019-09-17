@@ -34,4 +34,8 @@ public class GroupAttentionCheckDAO extends AbstractDAO<GroupAttentionCheck> {
         GroupAttentionCheck record = (GroupAttentionCheck) result.get(0);
         return record.isPass() ? PASS : FAIL;
     }
+
+    public void delete(String id) {
+        currentSession().delete(get(id));
+    }
 }

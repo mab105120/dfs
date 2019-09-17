@@ -34,6 +34,9 @@ public class DfsConfig extends Configuration {
     @JsonProperty("invitation")
     private InviteConfig inviteConfig;
 
+    @JsonProperty("awsConfig")
+    private AwsConfig awsConfig;
+
     public DataSourceFactory getDataSourceFactory() {
         return dataSourceFactory;
     }
@@ -64,5 +67,9 @@ public class DfsConfig extends Configuration {
 
     public InviteConfig getInviteConfig() {
         return inviteConfig;
+    }
+
+    public AwsConfig getAwsConfig() {
+        return awsConfig;
     }
 }

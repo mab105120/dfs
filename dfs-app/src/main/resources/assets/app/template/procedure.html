@@ -18,13 +18,42 @@
         <p><strong>We ask for your help!</strong>
         </p>
         </br>
-        <p>
+        <p ng-show="mode === 'NFS'">
             In what follows we ask you to answer basic questions about your experience with providing performance reviews.
             Afterwards, you will be asked to evaluate teachers' job performance based on reviews provided by the teacher's supervisors.
             The first {{ practiceRounds }} evaluations are for practice. The purpose of these rounds is to familiarize yourself with the exercise.
             At the end of each practice round you will receive feedback on your evaluation, please read the feedback carefully. Once the practice rounds are
             complete you will proceed to final evaluations of actual teacher performance profiles.
         </p>
+        <div ng-show="mode === 'DFS'">
+            <p>
+                In what follows we ask you to answer basic questions about your experience with providing performance reviews.
+                Afterwards, you will be asked to evaluate teachers' job performance based on reviews provided by the teacher's supervisors.
+                The first {{ practiceRounds }} evaluations are for practice. The purpose of these rounds is to familiarize yourself with the exercise.
+                At the end of each practice round you will receive feedback on your evaluation, please read the feedback carefully. Once the practice rounds are
+                complete, an anonymous profile will be created for you based on your input. This will mark the end of this HIT.
+            </p>
+            <p>
+                Within the next 24 hours, teachers eligible for tenure promotion will
+                review your profile. If they judge it suitable, they will invite you to provide appraisal feedback on their job performance for promotion. If you are selected
+                we will send you an invitation (using MTurk messaging system) to another HIT (3 minutes - $2) where you can submit the final performance review.
+            </p>
+        </div>
+        <div ng-show="mode === 'IFS'">
+            <p>
+                In what follows we ask you to answer basic questions about your experience with providing performance reviews.
+                Afterwards, you will be asked to evaluate teachers' job performance based on reviews provided by the teacher's supervisors.
+                The first {{ practiceRounds }} evaluations are for practice. The purpose of these rounds is to familiarize yourself with the exercise.
+                At the end of each practice round you will receive feedback on your evaluation, please read the feedback carefully. Once the practice rounds are
+                complete, an anonymous profile will be created for you based on your input. This will mark the end of this HIT.
+            </p>
+            <p>
+                Within the next 24 hours, supervisors of teachers eligible for tenure promotion will
+                review your profile. If they judge it suitable, they will invite you to provide appraisal feedback on their teacher's job performance for promotion. If you are selected
+                we will send you an invitation (using MTurk messaging system) to another HIT (3 minutes - $2) where you can submit the final performance review.
+            </p>
+        </div>
+
         </br>
         <h4>
             Your input will be considered for the final promotion decision. Please be mindful of the impact your decisions will have on personnel selection.

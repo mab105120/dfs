@@ -19,8 +19,9 @@
         function init() {
 
             if(!authService.isAuthenticated()) {
-                alert('You are not logged in. You need to log in to view this page.');
-                authService.login();
+                alert('This application is only for MTurk workers. Access denied.');
+                $scope.$parent.stopSpinner();
+                $state.go('welcome', { endSession: false });
             }
 
             $scope.showAlert = false;
@@ -53,7 +54,7 @@
         };
 
         $scope.continueFnc = function() {
-            $state.go('group-att-check', { showFailMessage: false });
+            $state.go('group-att-check', { showFailMessage: false, mode: $scope.profile.mode });
         }
 
         function handleFailure(response) {

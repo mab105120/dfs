@@ -3,6 +3,7 @@ package edu.grenoble.em.bourji.resource;
 import edu.grenoble.em.bourji.Authenticate;
 import edu.grenoble.em.bourji.ParticipantProfiles;
 import edu.grenoble.em.bourji.db.dao.ParticipantProfileDAO;
+import edu.grenoble.em.bourji.db.dao.StatusDAO;
 import edu.grenoble.em.bourji.db.pojo.ParticipantProfile;
 import io.dropwizard.hibernate.UnitOfWork;
 
@@ -13,7 +14,6 @@ import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.Random;
 
 /**
  * Created by Moe on 4/18/18.
@@ -24,9 +24,11 @@ import java.util.Random;
 public class ParticipantProfileResource {
 
     private ParticipantProfileDAO dao;
+    private StatusDAO statusDAO;
 
-    public ParticipantProfileResource(ParticipantProfileDAO dao) {
+    public ParticipantProfileResource(ParticipantProfileDAO dao, StatusDAO statusDAO) {
         this.dao = dao;
+        this.statusDAO = statusDAO;
     }
 
     /**
@@ -35,6 +37,7 @@ public class ParticipantProfileResource {
      * @param requestContext http request context
      * @return Assign a participant profile if one doesn't exist, return if profile exists
      */
+
     @GET
     @UnitOfWork
     public Response getParticipantProfile(@Context ContainerRequestContext requestContext) {
@@ -42,7 +45,8 @@ public class ParticipantProfileResource {
             String user = requestContext.getProperty("user").toString();
             ParticipantProfile profile = dao.getParticipantProfile(user);
             if (profile == null) {
-                ParticipantProfiles newProfile = assignProfile();
+                boolean reachedTheLimit = reachedTheLimit();
+                ParticipantProfiles newProfile = assignProfile(reachedTheLimit);
                 dao.add(user, newProfile);
                 return Response.ok(newProfile.getProfile()).build();
             } else
@@ -52,19 +56,23 @@ public class ParticipantProfileResource {
         }
     }
 
+    private boolean reachedTheLimit() {
+        return statusDAO.numberOfCompletedProfile("DFS") >= 60;
+    }
 
-    private ParticipantProfiles assignProfile() {
-        Random random = new Random();
-        int randomNumber = random.nextInt(3) + 1;
-        switch (randomNumber) {
-            case 1:
-                return ParticipantProfiles.NFS;
-            case 2:
-                return ParticipantProfiles.DFS;
-            case 3:
-                return ParticipantProfiles.IFS;
-            default:
-                throw new RuntimeException("Can not assign profile");
-        }
+    private ParticipantProfiles assignProfile(boolean excludeNfs) {
+        return ParticipantProfiles.DFS;
+//        Random random = new Random();
+//        int randomNumber = random.nextInt(2) + 1;
+//        switch (randomNumber) {
+//            case 1:
+//                return ParticipantProfiles.IFS;
+//            case 2:
+//                return ParticipantProfiles.DFS;
+////            case 3:
+////                return ParticipantProfiles.NFS;
+//            default:
+//                throw new RuntimeException("Can not assign profile");
+//        }
     }
 }

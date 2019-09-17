@@ -1,6 +1,5 @@
 package edu.grenoble.em.bourji;
 
-import com.auth0.jwk.JwkException;
 import edu.grenoble.em.bourji.api.BadResponse;
 import org.eclipse.jetty.http.HttpStatus;
 
@@ -16,38 +15,20 @@ import java.io.IOException;
 @Authenticate
 class AuthFilter implements ContainerRequestFilter {
 
-    private final JwtTokenHelper helper;
-
-    AuthFilter(JwtTokenHelper helper) {
-        this.helper = helper;
-    }
 
     @Override
     public void filter(ContainerRequestContext containerRequestContext) throws IOException {
-        String accessId = containerRequestContext.getHeaderString("Authorization");
+        String mid = containerRequestContext.getHeaderString("workerId");
         try {
-
-            if (accessId == null || accessId.isEmpty()) {
+            if (mid == null || mid.isEmpty()) {
                 containerRequestContext.abortWith(Response
                         .status(HttpStatus.FORBIDDEN_403)
                         .type(MediaType.APPLICATION_JSON_TYPE)
-                        .entity(new BadResponse().withMessage("Missing authorization header"))
+                        .entity(new BadResponse().withMessage("Authorization error: Missing MID."))
                         .build());
-                return;
             }
-
-            if(!accessId.startsWith("Bearer")) {
-                containerRequestContext.abortWith(Response
-                        .status(HttpStatus.FORBIDDEN_403)
-                        .type(MediaType.APPLICATION_JSON_TYPE)
-                        .entity(new BadResponse().withMessage("Authorization header missing Bearer"))
-                        .build());
-                return;
-            }
-
-            accessId = accessId.substring(7);
-            containerRequestContext.setProperty("user", helper.getUserIdFromToken(accessId));
-        } catch (JwkException e) {
+            containerRequestContext.setProperty("user", mid);
+        } catch (Exception e) {
             containerRequestContext.abortWith(Response
                     .status(HttpStatus.FORBIDDEN_403)
                     .type(MediaType.APPLICATION_JSON_TYPE)

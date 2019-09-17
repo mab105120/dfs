@@ -1,7 +1,6 @@
 package edu.grenoble.em.bourji.resource;
 
-import edu.grenoble.em.bourji.Authenticate;
-import edu.grenoble.em.bourji.PerformanceReviewCache;
+import edu.grenoble.em.bourji.*;
 import edu.grenoble.em.bourji.api.EvaluationPayload;
 import edu.grenoble.em.bourji.api.ProgressStatus;
 import edu.grenoble.em.bourji.db.dao.AbsoluteEvaluationDao;
@@ -13,7 +12,11 @@ import edu.grenoble.em.bourji.db.pojo.Invite;
 import edu.grenoble.em.bourji.db.pojo.Status;
 import io.dropwizard.hibernate.UnitOfWork;
 import org.slf4j.Logger;
+import software.amazon.awssdk.services.mturk.MTurkClient;
+import software.amazon.awssdk.services.mturk.model.AssociateQualificationWithWorkerRequest;
+import software.amazon.awssdk.services.mturk.model.AssociateQualificationWithWorkerResponse;
 
+import javax.mail.MessagingException;
 import javax.ws.rs.*;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
@@ -35,13 +38,18 @@ public class AbsoluteEvaluationResource {
     private EvaluationActivityDAO activityDao;
     private StatusDAO statusDao;
     private InviteDAO inviteDAO;
+    private final AwsConfig awsConfig;
+    private final EmailConfiguration emailConfig;
 
     public AbsoluteEvaluationResource(AbsoluteEvaluationDao dao, EvaluationActivityDAO activityDao,
-                                      StatusDAO statusDAO, InviteDAO inviteDAO) {
+                                      StatusDAO statusDAO, InviteDAO inviteDAO, AwsConfig awsConfig,
+                                      EmailConfiguration emailConfig) {
         this.dao = dao;
         this.activityDao = activityDao;
         this.statusDao = statusDAO;
         this.inviteDAO = inviteDAO;
+        this.awsConfig = awsConfig;
+        this.emailConfig = emailConfig;
     }
 
     /**
@@ -80,13 +88,37 @@ public class AbsoluteEvaluationResource {
             statusDao.add(new Status(user, status.name(), nextSubmissionId));
             if (Objects.equals(evaluation.getEvaluationCode(), "2")) {
                 Invite invite = inviteDAO.getInvitee(user);
-                if (invite != null)
+                if (invite != null) {
                     inviteDAO.updateInviteeStatus(invite, "COMPLETE");
+                    LOGGER.info("Assigning invite complete qual id to: " + user);
+                    assignInviteQual(user);
+                }
             }
         } catch (Throwable e) {
             return Respond.respondWithError("Unable to save response. Error: " + e.getMessage());
         }
         return Response.ok().build();
+    }
+
+    private void assignInviteQual(String workerId) throws MessagingException {
+        String qualId = awsConfig.getInviteCompleteQualId();
+        MTurkClient client = new MTurkClientProvider(awsConfig).getClient();
+        AssociateQualificationWithWorkerRequest req = AssociateQualificationWithWorkerRequest.builder()
+                .qualificationTypeId(qualId)
+                .workerId(workerId)
+                .integerValue(0)
+                .sendNotification(false)
+                .build();
+        AssociateQualificationWithWorkerResponse res = client.associateQualificationWithWorker(req);
+        if (res.sdkHttpResponse().statusCode() != 200) {
+            int statusCode = res.sdkHttpResponse().statusCode();
+            String statusText = res.sdkHttpResponse().statusText().orElse("");
+            new EmailService(emailConfig).sendEmail(
+                    "mohd.bourji@gmail.com",
+                    "Failed to assign Profile Complete qualification",
+                    String.format("Failed to assign qual: %s to worker Id: %s. Status code: %s, status text: %s", qualId, workerId, statusCode, statusText)
+            );
+        }
     }
 
     @GET

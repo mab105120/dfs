@@ -20,11 +20,11 @@
             }
 
             function getExpertEvaluation(payload) {
-                var id_token = localStorage.getItem("id_token");
+                var workerId = localStorage.getItem("workerId");
                 var config = {
                     method: 'POST',
                     headers: {
-                        "Authorization": 'Bearer ' + id_token
+                        "workerId": workerId
                     },
                     data: payload,
                     url:  url + '/api/evaluation/expert/absolute'
@@ -33,11 +33,11 @@
             }
 
             function postUserDemographic(user) {
-                var id_token = localStorage.getItem("id_token");
+                var workerId = localStorage.getItem("workerId");
                 return $http({
                     method: 'POST',
                     headers: {
-                        "Authorization": 'Bearer ' + id_token
+                        'workerId': workerId
                     },
                     data: user,
                     url: url + '/api/questionnaire/user-demographic'
@@ -45,33 +45,33 @@
             }
 
             function stepIsCompleted(step) {
-                var id_token = localStorage.getItem("id_token");
+                var workerId = localStorage.getItem("workerId");
                 return $http({
                     method: 'GET',
                     headers: {
-                        "Authorization": 'Bearer ' + id_token
+                        'workerId': workerId
                     },
                     url: url + '/api/status/step-is-completed/' + step
                 });
             }
 
             function getUserDemographics() {
-                var id_token = localStorage.getItem("id_token");
+                var workerId = localStorage.getItem("workerId");
                 return $http({
                     method: 'GET',
                     headers: {
-                        "Authorization": 'Bearer ' + id_token
+                        "workerId": workerId
                     },
                     url: url + '/api/questionnaire/user-demographic'
                 })
             }
 
             function postUserExperience(user) {
-                var id_token = localStorage.getItem('id_token');
+                var workerId = localStorage.getItem('workerId');
                 return $http({
                     method: 'POST',
                     headers: {
-                        'Authorization': 'Bearer ' + id_token
+                        'workerId': workerId
                     },
                     data: user,
                     url: url + '/api/questionnaire/user-experience'
@@ -79,33 +79,33 @@
             }
 
             function getUserExperience() {
-                var id_token = localStorage.getItem("id_token");
+                var workerId = localStorage.getItem('workerId');
                 return $http({
                     method: 'GET',
                     headers: {
-                        "Authorization": 'Bearer ' + id_token
+                        'workerId': workerId
                     },
                     url: url + '/api/questionnaire/user-experience'
                 })
             }
 
             function getUserConfidence() {
-                var id_token = localStorage.getItem("id_token");
+                var workerId = localStorage.getItem('workerId');
                 return $http({
                     method: 'GET',
                     headers: {
-                        "Authorization": 'Bearer ' + id_token
+                        'workerId': workerId
                     },
                     url: url + '/api/questionnaire/user-confidence'
                 })
             }
 
             function postUserConfidence(payload) {
-                var id_token = localStorage.getItem('id_token');
+                var workerId = localStorage.getItem('workerId');
                 return $http({
                         method: 'POST',
                         headers: {
-                            'Authorization': 'Bearer ' + id_token
+                            'workerId': workerId
                         },
                         data: payload,
                         url: url + '/api/questionnaire/user-confidence'
@@ -113,12 +113,12 @@
             }
 
             function postUserEvaluation(userEvaluation, mode) {
-                var id_token = localStorage.getItem('id_token');
+                var workerId = localStorage.getItem('workerId');;
                 var path = mode === 'relative' ? '/api/evaluation/relative' : '/api/evaluation/absolute';
                 return $http({
                         method: 'POST',
                         headers: {
-                            'Authorization': 'Bearer ' + id_token
+                            'workerId': workerId
                         },
                         data: userEvaluation,
                         url: url + path
@@ -126,62 +126,62 @@
             }
 
             function getUserEvaluation(evalCode) {
-                var id_token = localStorage.getItem('id_token');
+                var workerId = localStorage.getItem('workerId');
                 return $http({
                         method: 'GET',
                         headers: {
-                            'Authorization': 'Bearer ' + id_token
+                            'workerId': workerId
                         },
                         url: url + '/api/evaluation/absolute/' + evalCode
                 });
             }
 
             function validateUserResponses() {
-                var id_token = localStorage.getItem('id_token');
+                var workerId = localStorage.getItem('workerId');
                 return $http({
                         method: 'GET',
                         headers: {
-                            'Authorization': 'Bearer ' + id_token
+                            'workerId': workerId
                         },
                         url: url + '/api/validate'
                 });
             }
 
             function postLogin() {
-                var id_token = localStorage.getItem('id_token');
+                var workerId = localStorage.getItem('workerId');
                 return $http({
                         method: 'POST',
                         headers: {
-                            'Authorization': 'Bearer ' + id_token
+                            'workerId': workerId
                         },
                         url: url + '/api/activity/login'
                 });
             }
 
             function postLogout() {
-                var id_token = localStorage.getItem('id_token');
+                var workerId = localStorage.getItem('workerId');
                 return $http({
                         method: 'POST',
                         headers: {
-                            'Authorization': 'Bearer ' + id_token
+                            'workerId': workerId
                         },
                         url: url + '/api/activity/logout'
                 });
             }
 
             function getProgress() {
-                var id_token = localStorage.getItem('id_token');
+                var workerId = localStorage.getItem('workerId');
                 return $http({
                         method: 'GET',
                         headers: {
-                            'Authorization': 'Bearer ' + id_token
+                            'workerId': workerId
                         },
                         url: url + '/api/status/progress'
                 });
             }
 
             function sendEmail(from, subject, body) {
-                var id_token = localStorage.getItem('id_token');
+                var workerId = localStorage.getItem('workerId');
                 var supportMailDetails = {
                     from: from,
                     subject: subject,
@@ -191,29 +191,29 @@
                         method: 'POST',
                         data: supportMailDetails,
                         headers: {
-                            'Authorization': 'Bearer ' + id_token
+                            'workerId': workerId
                         },
                         url: url + '/api/communication/send-support-email'
                 });
             }
 
             function getParticipantProfile() {
-                var id_token = localStorage.getItem('id_token');
+                var workerId = localStorage.getItem('workerId');
                 return $http({
                         method: 'GET',
                         headers: {
-                            'Authorization': 'Bearer ' + id_token
+                            'workerId': workerId
                         },
                         url: url + '/api/participant-profile/'
                 });
             }
 
             function requestInvite(req) {
-                var id_token = localStorage.getItem('id_token');
+                var workerId = localStorage.getItem('workerId');
                 return $http({
                     method: 'POST',
                     headers: {
-                        'Authorization': 'Bearer ' + id_token
+                        'workerId': workerId
                     },
                     data: req,
                     url: url + '/api/status/request-invite'
@@ -221,22 +221,22 @@
             }
 
             function getInvitationStatus() {
-                var id_token = localStorage.getItem('id_token');
+                var workerId = localStorage.getItem('workerId');
                 return $http({
                     method: 'GET',
                     headers: {
-                        'Authorization': 'Bearer ' + id_token,
+                        'workerId': workerId
                     },
                     url: url + '/api/status/invitation-status'
                 })
             }
 
             function recordGroupAttentionCheck(payload) {
-                var id_token = localStorage.getItem('id_token');
+                var workerId = localStorage.getItem('workerId');
                 return $http({
                     method: 'POST',
                     headers: {
-                        'Authorization': 'Bearer ' + id_token
+                        'workerId': workerId
                     },
                     data: payload,
                     url: url + '/api/group-att-check'
@@ -244,11 +244,11 @@
             }
 
             function groupAttentionCheckComplete() {
-                var id_token = localStorage.getItem('id_token');
+                var workerId = localStorage.getItem('workerId');
                 return $http({
                     method: 'GET',
                     headers: {
-                        'Authorization': 'Bearer ' + id_token
+                        'workerId': workerId
                     },
                     url: url + '/api/group-att-check/is-complete'
                 });

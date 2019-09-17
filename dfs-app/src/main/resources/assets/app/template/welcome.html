@@ -2,9 +2,14 @@
     <div class="col-md-12">
         <h1>Welcome!</h1>
     </div>
-    <div class="col-md-12">
-        <h3>Please click <a ng-click="login()">here</a> to sign in or sign up.</h3>
-        <p>The email you use to sign up will <strong>not</strong> be shared or used to contact you under any circumstances.</p>
+    <div class="col-md-12" ng-show="showStartMessage">
+        <h3>Please click <a ng-click="go()">here</a> to begin.</h3>
+    </div>
+    <div class="col-md-12" ng-show="showAccessDeniedMessage">
+        <h3>This web page is meant for use with MTurk (a worker ID is required). Access is only prohibited from MTurk HIT.</h3>
+    </div>
+    <div class="col-md-12" ng-show="showEndOfSessionMessage">
+        <h3>This session has ended.</h3>
     </div>
     <div class="col-md-12" style="padding-top:100px;">
         <p>Authentication for this site is powered by:</p>
