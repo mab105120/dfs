@@ -1,6 +1,6 @@
 package edu.grenoble.em.bourji.db.dao;
 
-import edu.grenoble.em.bourji.db.pojo.UserConfidence;
+import edu.grenoble.em.bourji.db.pojo.UserRecipOrientation;
 import io.dropwizard.hibernate.AbstractDAO;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
@@ -11,30 +11,30 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Created by Moe on 9/12/2017.
+ * Created by Moe on 9/22/19.
  */
-public class UserConfidenceDAO extends AbstractDAO<UserConfidence> {
-    public UserConfidenceDAO(SessionFactory sessionFactory) {
+public class UserRecipOrientationDAO extends AbstractDAO<UserRecipOrientation> {
+    public UserRecipOrientationDAO(SessionFactory sessionFactory) {
         super(sessionFactory);
     }
 
-    public void add(UserConfidence userConfidence) {
-        persist(userConfidence);
+    public void add(UserRecipOrientation userRecipOrientation) {
+        persist(userRecipOrientation);
     }
 
-    public void addAll(List<UserConfidence> userConfidenceList) {
-        userConfidenceList.stream().forEach(this::add);
+    public void addAll(List<UserRecipOrientation> userRecipOrientationList) {
+        userRecipOrientationList.stream().forEach(this::add);
     }
 
-    public List<UserConfidence> getUserConfidence(String user) {
-        Criteria cr = currentSession().createCriteria(UserConfidence.class)
+    public List<UserRecipOrientation> getUserRecipOrientation(String user) {
+        Criteria cr = currentSession().createCriteria(UserRecipOrientation.class)
                 .add(Restrictions.eq("user", user))
                 .add(Restrictions.eq("submissionId", getLastSubmission(user)));
         return cr.list();
     }
 
     private int getLastSubmission(String user) {
-        Criteria cr = currentSession().createCriteria(UserConfidence.class);
+        Criteria cr = currentSession().createCriteria(UserRecipOrientation.class);
         cr.add(Restrictions.eq("user", user));
         cr.setProjection(Projections.distinct(Projections.property("submissionId")));
         List<Integer> submissionIds = cr.list();
@@ -43,6 +43,7 @@ public class UserConfidenceDAO extends AbstractDAO<UserConfidence> {
     }
 
     public int getNextSubmissionId(String user) {
-        return getLastSubmission(user) + 1;
+        int nextSubmissionId = getLastSubmission(user);
+        return nextSubmissionId == 0 ? 0 : nextSubmissionId + 1;
     }
 }

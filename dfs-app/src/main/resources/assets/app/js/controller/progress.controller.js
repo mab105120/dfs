@@ -51,6 +51,11 @@
                         priority: status_priority++,
                         id: 'QUEST_EXP',
                         display: 'Professional experience questionnaire'
+                    },
+                    {
+                        priority: status_priority++,
+                        id: 'QUEST_RO',
+                        display: 'General experience questionnaire'
                     }
                 );
             }
@@ -155,6 +160,8 @@
                 $state.go('questionnaire');
             } else if (id === 'QUEST_EXP') {
                 $state.go('experience');
+            } else if (id === 'QUEST_RO') {
+                $state.go('reciprocation-orientation')
             } else if (id === 'QUEST_CON') {
                 $state.go('confidence');
             } else if(id.startsWith('EVALUATION_P')) {

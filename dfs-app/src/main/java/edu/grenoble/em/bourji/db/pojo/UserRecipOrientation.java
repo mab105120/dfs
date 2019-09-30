@@ -10,10 +10,10 @@ import java.util.Objects;
  * Created by Moe on 9/12/2017.
  */
 @Entity
-@Table(name = "USER_CONFIDENCE")
+@Table(name = "USER_RO")
 @JsonIgnoreProperties(ignoreUnknown = true)
-@IdClass(UserConfidence.UniqueIdentifier.class)
-public class UserConfidence {
+@IdClass(UserRecipOrientation.UniqueIdentifier.class)
+public class UserRecipOrientation {
 
     @Id
     @Column(name = "ID", nullable = false, length = 64)
@@ -27,13 +27,13 @@ public class UserConfidence {
     @Column(name = "SUBMISSION_ID", nullable = false, unique = true)
     private int submissionId;
 
-    public UserConfidence(String user, String itemCode, int response) {
+    public UserRecipOrientation(String user, String itemCode, int response) {
         this.user = user;
         this.itemCode = itemCode;
         this.response = response;
     }
 
-    public UserConfidence() {
+    public UserRecipOrientation() {
         // no-arg constructor for hibernate
     }
 

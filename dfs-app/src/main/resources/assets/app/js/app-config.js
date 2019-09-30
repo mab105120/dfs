@@ -63,6 +63,11 @@
             controller: 'questConfidenceController',
             templateUrl: 'app/template/questionnaire/confidence.html'
           })
+          .state('reciprocation-orientation', {
+            url: '/questionnaire/ro',
+            controller: 'reciprocationOrientationController',
+            templateUrl: 'app/template/questionnaire/reciprocation-orientation.html'
+          })
           .state('evaluation', {
             url: '/evaluation/:id',
             controller: 'evaluationController',

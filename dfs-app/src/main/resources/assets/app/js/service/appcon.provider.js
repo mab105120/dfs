@@ -89,26 +89,26 @@
                 })
             }
 
-            function getUserConfidence() {
+            function getUserRecipOrientation() {
                 var workerId = localStorage.getItem('workerId');
                 return $http({
                     method: 'GET',
                     headers: {
                         'workerId': workerId
                     },
-                    url: url + '/api/questionnaire/user-confidence'
-                })
+                    url: url + '/api/questionnaire/user-ro'
+                });
             }
 
-            function postUserConfidence(payload) {
+            function postUserRecipOrientation(payload) {
                 var workerId = localStorage.getItem('workerId');
                 return $http({
-                        method: 'POST',
-                        headers: {
-                            'workerId': workerId
-                        },
-                        data: payload,
-                        url: url + '/api/questionnaire/user-confidence'
+                    method: 'POST',
+                    headers: {
+                        'workerId': workerId
+                    },
+                    data: payload,
+                    url: url + '/api/questionnaire/user-ro'
                 });
             }
 
@@ -261,8 +261,8 @@
                 postUserDemographic: postUserDemographic,
                 getUserDemographics: getUserDemographics,
                 postUserExperience: postUserExperience,
-                postUserConfidence: postUserConfidence,
-                getUserConfidence: getUserConfidence,
+                postUserRecipOrientation: postUserRecipOrientation,
+                getUserRecipOrientation: getUserRecipOrientation,
                 getUserExperience: getUserExperience,
                 postUserEvaluation: postUserEvaluation,
                 getUserEvaluation: getUserEvaluation,

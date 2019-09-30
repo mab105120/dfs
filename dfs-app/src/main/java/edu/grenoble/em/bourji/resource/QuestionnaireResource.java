@@ -5,9 +5,9 @@ import edu.grenoble.em.bourji.api.ProgressStatus;
 import edu.grenoble.em.bourji.db.dao.QuestionnaireDAO;
 import edu.grenoble.em.bourji.db.dao.StatusDAO;
 import edu.grenoble.em.bourji.db.pojo.Status;
-import edu.grenoble.em.bourji.db.pojo.UserConfidence;
 import edu.grenoble.em.bourji.db.pojo.UserDemographic;
 import edu.grenoble.em.bourji.db.pojo.UserExperience;
+import edu.grenoble.em.bourji.db.pojo.UserRecipOrientation;
 import io.dropwizard.hibernate.UnitOfWork;
 import org.slf4j.Logger;
 
@@ -79,43 +79,43 @@ public class QuestionnaireResource {
     }
 
     @POST
-    @Path("/user-confidence")
+    @Path("/user-ro")
     @UnitOfWork
-    public Response addUserConfidence(List<UserConfidence> userConfidenceResponse,
-                                      @Context ContainerRequestContext requestContext) {
-
+    public Response addUserRecipOrientation(List<UserRecipOrientation> userRecipOrientation,
+                                            @Context ContainerRequestContext requestContext) {
+        String userId = requestContext.getProperty("user").toString();
         try {
-            String userId = requestContext.getProperty("user").toString();
-            int submissionId = dao.getUserConfidenceDAO().getNextSubmissionId(userId);
-            LOGGER.info(String.format("Posting confidence questionnaire response for user %s submission id %s ", userId, submissionId));
-            userConfidenceResponse.stream().forEach(res -> {
+            int submissionId = dao.getUserRecipOrientationDAO().getNextSubmissionId(userId);
+            LOGGER.info(String.format("Posting RO questionnaire response for user %s submission id %s ", userId, submissionId));
+            userRecipOrientation.stream().forEach(res -> {
                 res.setUser(userId);
                 res.setSubmissionId(submissionId);
             });
-            dao.getUserConfidenceDAO().addAll(userConfidenceResponse);
-            LOGGER.info(String.format("Setting user (%s) status to QUEST_CON", userId));
-            statusDAO.add(new Status(userId, ProgressStatus.QUEST_CON.name(), submissionId));
-        } catch (Throwable e) {
-            return Respond.respondWithError("Unable to save response. Error: " + e.getMessage());
+            dao.getUserRecipOrientationDAO().addAll(userRecipOrientation);
+            LOGGER.info(String.format("Setting user (%s) status to QUEST_RO", userId));
+            statusDAO.add(new Status(userId, ProgressStatus.QUEST_RO.name(), submissionId));
+        } catch(Throwable e) {
+            String msg = "Unable to store user recip orientation for user ID " + userId + ". details: " + e.getMessage();
+            LOGGER.error(msg);
+            return Respond.respondWithError(msg);
         }
         return Response.ok().build();
     }
 
     @GET
-    @Path("/user-confidence")
+    @Path("/user-ro")
     @UnitOfWork
-    public Response getUserConfidence(@Context ContainerRequestContext requestContext) {
-
+    public Response getUserReciprocationOrientation(@Context ContainerRequestContext requestContext) {
+        LOGGER.info("Getting user reciprocation orientation scores to populate form");
         try {
             String userId = requestContext.getProperty("user").toString();
-            LOGGER.info("User id: " + userId);
-            List<UserConfidence> userConfidence = dao.getUserConfidenceDAO().getUserConfidence(userId);
-            LOGGER.info("Retrieved user confidence response for user: " + userId);
-            return Response.ok(userConfidence).build();
+            List<UserRecipOrientation> userRecipOrientation = dao.getUserRecipOrientationDAO().getUserRecipOrientation(userId);
+            LOGGER.info("Successfully retrieved reciprocation orientation scores for: " + userId);
+            return Response.ok(userRecipOrientation).build();
         } catch (Throwable e) {
-            String message = "Error retrieving user confidence response. Details: " + e.getMessage();
-            LOGGER.error(message);
-            return Respond.respondWithError(message);
+            String errorMsg = "Unable to retrieve user reciprocation orientation scores. Details: " + e.getMessage();
+            LOGGER.error(errorMsg);
+            return Respond.respondWithError(errorMsg);
         }
     }
 
