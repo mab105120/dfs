@@ -26,7 +26,7 @@ public class DfsApp extends Application<DfsConfig> {
 
     protected final HibernateBundle<DfsConfig> hibernate = new HibernateBundle<DfsConfig>(
             PerformanceReview.class, UserDemographic.class, UserExperience.class,
-            UserConfidence.class, RelativeEvaluation.class, Status.class, Activity.class, Invite.class, GroupAttentionCheck.class,
+            UserRecipOrientation.class, RelativeEvaluation.class, Status.class, Activity.class, Invite.class, GroupAttentionCheck.class,
             EvaluationActivity.class, AbsoluteEvaluation.class, ParticipantProfile.class, ExpertEvaluation.class) {
         @Override
         public DataSourceFactory getDataSourceFactory(DfsConfig configuration) {
@@ -60,13 +60,12 @@ public class DfsApp extends Application<DfsConfig> {
         QuestionnaireDAO questionnaireDAO = new QuestionnaireDAO()
                 .withUserDemographicDao(new UserDemographicDAO(hibernate.getSessionFactory()))
                 .withUserExperienceDao(new UserExperienceDAO(hibernate.getSessionFactory()))
-                .withUserConfidenceDao(new UserConfidenceDAO(hibernate.getSessionFactory()));
+                .withUserRecipOrientationDao(new UserRecipOrientationDAO(hibernate.getSessionFactory()));
 
         environment.jersey().register(new AuthFilter());
         StatusDAO statusDAO = new StatusDAO(hibernate.getSessionFactory());
         InviteDAO inviteDAO = new InviteDAO(hibernate.getSessionFactory());
         ActivityDAO activityDAO = new ActivityDAO(hibernate.getSessionFactory());
-        AppraisalConfidenceDAO confidenceDAO = new AppraisalConfidenceDAO(hibernate.getSessionFactory());
         EvaluationActivityDAO evaluationActivityDAO = new EvaluationActivityDAO(hibernate.getSessionFactory());
         AbsoluteEvaluationDao absEvalDao = new AbsoluteEvaluationDao(hibernate.getSessionFactory());
         ExpertEvaluationDAO expertEvaluationDAO = new ExpertEvaluationDAO(hibernate.getSessionFactory());
@@ -80,7 +79,6 @@ public class DfsApp extends Application<DfsConfig> {
         environment.jersey().register(new ActivityResource(activityDAO));
         environment.jersey().register(new CommunicationResource(config.getEmailConfiguration().getUsername(),
                 config.getEmailConfiguration().getPassword(), emails, inviteDAO, config.getInviteConfig()));
-        environment.jersey().register(new ValidationResource(confidenceDAO, questionnaireDAO));
         environment.jersey().register(new AbsoluteEvaluationResource(absEvalDao, evaluationActivityDAO, statusDAO, inviteDAO,
                 config.getAwsConfig(), config.getEmailConfiguration()));
         environment.jersey().register(new ParticipantProfileResource(participantProfileDAO, statusDAO));

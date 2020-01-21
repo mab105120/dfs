@@ -8,8 +8,8 @@ import edu.grenoble.em.bourji.ExperimentMode;
 public class ParticipantProfile {
 
     private boolean isRelative;
-    private boolean includeConfidenceScale;
-    private boolean offerTraining;
+    private boolean includeROScale;
+    private boolean isTraining;
     private int practice;
     private int evaluations;
     private String feedback;
@@ -20,23 +20,23 @@ public class ParticipantProfile {
         // Default no-arg constructor for Jackson
     }
 
-    public ParticipantProfile( boolean isRelative, boolean includeConfidenceScale, int practice, int evaluations,
-                               String feedback, int duration, ExperimentMode mode) {
+    public ParticipantProfile(boolean isRelative, boolean includeROScale, int practice, int evaluations,
+                              String feedback, int duration, ExperimentMode mode) {
         this.isRelative = isRelative;
-        this.includeConfidenceScale = includeConfidenceScale;
+        this.includeROScale = includeROScale;
         this.practice = practice;
         this.evaluations = evaluations;
         this.feedback = feedback;
         this.duration = duration;
         this.mode = mode;
-        this.offerTraining = false;
+        this.isTraining = false;
     }
 
-    public ParticipantProfile( boolean isRelative, boolean includeConfidenceScale, boolean offerTraining, int practice, int evaluations,
-                               String feedback, int duration, ExperimentMode mode) {
+    public ParticipantProfile(boolean isRelative, boolean includeROScale, boolean isTraining, int practice, int evaluations,
+                              String feedback, int duration, ExperimentMode mode) {
         this.isRelative = isRelative;
-        this.includeConfidenceScale = includeConfidenceScale;
-        this.offerTraining = offerTraining;
+        this.includeROScale = includeROScale;
+        this.isTraining = isTraining;
         this.practice = practice;
         this.evaluations = evaluations;
         this.feedback = feedback;
@@ -48,8 +48,8 @@ public class ParticipantProfile {
         return isRelative;
     }
 
-    public boolean isIncludeConfidenceScale() {
-        return includeConfidenceScale;
+    public boolean isIncludeROScale() {
+        return includeROScale;
     }
 
     public int getPractice() {
@@ -72,7 +72,7 @@ public class ParticipantProfile {
         return mode;
     }
 
-    public boolean isOfferTraining() {
-        return offerTraining;
+    public boolean isTraining() {
+        return isTraining;
     }
 }

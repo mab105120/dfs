@@ -7,7 +7,7 @@ public class QuestionnaireDAO {
 
     private UserDemographicDAO userDemographicDAO;
     private UserExperienceDAO userExperienceDAO;
-    private UserConfidenceDAO userConfidenceDAO;
+    private UserRecipOrientationDAO userRecipOrientationDAO;
 
     public QuestionnaireDAO withUserDemographicDao(UserDemographicDAO dao) {
         this.userDemographicDAO = dao;
@@ -19,8 +19,8 @@ public class QuestionnaireDAO {
         return this;
     }
 
-    public QuestionnaireDAO withUserConfidenceDao(UserConfidenceDAO dao) {
-        this.userConfidenceDAO = dao;
+    public QuestionnaireDAO withUserRecipOrientationDao(UserRecipOrientationDAO dao) {
+        this.userRecipOrientationDAO = dao;
         return this;
     }
 
@@ -32,5 +32,7 @@ public class QuestionnaireDAO {
         return userExperienceDAO;
     }
 
-    public UserConfidenceDAO getUserConfidenceDAO() { return userConfidenceDAO;}
+    public UserRecipOrientationDAO getUserRecipOrientationDAO() {
+        return userRecipOrientationDAO;
+    }
 }

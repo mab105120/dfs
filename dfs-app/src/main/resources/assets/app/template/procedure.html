@@ -7,12 +7,22 @@
 <div class="row">
     <div class="col-sm-8 col-sm-offset-2" ng-show="!isRelative && !isExpert">
         <h3>Background</h3>
-        <p>
+        <p ng-hide="profile.training">
             Every year select high schools must decide which teachers would be promoted for
             tenure.
             This year, in an initiative to improve its tenure selection process, the tenure board at Kingston High
             School (K.H.S) <sup>*</sup>
             decided to solicit outside input on its promotion decisions.
+        </p>
+
+        <!--For Developmental Appraisal-->
+        <p ng-show="profile.training">
+            Every year select high schools must decide which teachers would be sent to the Annual Summer Teacher Conference.
+            The conference, spread over one week, helps under-performing teachers build skills that allow them to improve their performance and enhance their careers.
+            Unfortunately, only limited spots are available so struggling teachers are considered in priority.
+            This year, in an initiative to improve its selection process, the Teacher Training Committee at Kingston High
+            School (K.H.S) <sup>*</sup>
+            decided to solicit outside input on its training selection decisions.
         </p>
         </br>
         <p><strong>We ask for your help!</strong>
@@ -33,9 +43,15 @@
                 At the end of each practice round you will receive feedback on your evaluation, please read the feedback carefully. Once the practice rounds are
                 complete, an anonymous profile will be created for you based on your input. This will mark the end of this HIT.
             </p>
-            <p>
+            <p ng-hide="profile.training">
                 Within the next 24 hours, teachers eligible for tenure promotion will
                 review your profile. If they judge it suitable, they will invite you to provide appraisal feedback on their job performance for promotion. If you are selected
+                we will send you an invitation (using MTurk messaging system) to another HIT (3 minutes - $2) where you can submit the final performance review.
+            </p>
+            <!--For Developmental Appraisal-->
+            <p ng-show="profile.training">
+                Within the next 24 hours, teachers will
+                review your profile. If they judge it suitable, they will invite you to provide appraisal feedback on their job performance. If you are selected
                 we will send you an invitation (using MTurk messaging system) to another HIT (3 minutes - $2) where you can submit the final performance review.
             </p>
         </div>
@@ -47,31 +63,32 @@
                 At the end of each practice round you will receive feedback on your evaluation, please read the feedback carefully. Once the practice rounds are
                 complete, an anonymous profile will be created for you based on your input. This will mark the end of this HIT.
             </p>
-            <p>
+            <p ng-hide="profile.training">
                 Within the next 24 hours, supervisors of teachers eligible for tenure promotion will
                 review your profile. If they judge it suitable, they will invite you to provide appraisal feedback on their teacher's job performance for promotion. If you are selected
+                we will send you an invitation (using MTurk messaging system) to another HIT (3 minutes - $2) where you can submit the final performance review.
+            </p>
+            <!--For Developmental Appraisal-->
+            <p ng-show="profile.training">
+                Within the next 24 hours, supervisors of teachers will
+                review your profile. If they judge it suitable, they will invite you to provide appraisal feedback on their teacher's job performance. If you are selected
                 we will send you an invitation (using MTurk messaging system) to another HIT (3 minutes - $2) where you can submit the final performance review.
             </p>
         </div>
 
         </br>
-        <h4>
+        <h4 ng-hide="profile.training">
             Your input will be considered for the final promotion decision. Please be mindful of the impact your decisions will have on personnel selection.
+        </h4>
+        <!--For Developmental Appraisal-->
+        <h4 ng-show="profile.training">
+            Your input will be considered to determine each teacher's need for the training program. Please be mindful of the impact your decisions will have on personnel selection.
         </h4>
         </br>
         <p style="font-size:0.9em;color:maroon ">
             <sup>*</sup> In order to protect the school's privacy and make sure any previous knowledge of the school
             doesn't influence your response, we are using the Kingston High School (K.H.S) pseudonym. Any resemblance to
             any educational facilities is purely coincidental.
-        </p>
-        </br>
-    </div>
-    <div class="col-sm-8 col-sm-offset-2" ng-show="isExpert">
-        <h3>Background</h3>
-        <p>
-            In what follows we ask you to evaluate teachers' job performance on three job dimensions: student learning, instructional practice,
-            and professionalism. You will be provided with two supervisors' reviews of each teacher on each dimension. After reading as many reviews
-            as you think necessary, we ask you to fill out a performance evaluation form for each teacher based on the supervisor reviews.
         </p>
         </br>
     </div>

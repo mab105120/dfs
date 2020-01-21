@@ -153,30 +153,28 @@ public class MTurkResource {
     }
 
     private void sendNotification(List<ParticipantProfile> participants, boolean isReminder) {
-        MTurkClient client = new MTurkClientProvider(config).getClient();
         String inviteSubject = "You are invited to a follow up HIT (Pay: $2 | Time: 3 mins)";
         String reminderSubject = "A HIT is waiting for you! (Pay: $2 | Time: 3 mins)";
         String subject = isReminder ? "REMINDER: " + reminderSubject : inviteSubject;
-        List<String> dfsWorkerIds = filterProfiles(participants, "DFS")
-                .stream().map(ParticipantProfile::getId).collect(Collectors.toList());
-        List<String> ifsWorkerIds = filterProfiles(participants, "IFS")
-                .stream().map(ParticipantProfile::getId).collect(Collectors.toList());
-        if (!dfsWorkerIds.isEmpty())
-            client.notifyWorkers(
-                    NotifyWorkersRequest.builder()
-                            .subject(subject)
-                            .messageText(getDfsInviteMessage())
-                            .workerIds(dfsWorkerIds)
-                            .build()
-            );
-        if (!ifsWorkerIds.isEmpty())
-            client.notifyWorkers(
-                    NotifyWorkersRequest.builder()
-                            .subject(subject)
-                            .messageText(getIfsInviteMessage())
-                            .workerIds(ifsWorkerIds)
-                            .build()
-            );
+        List<String> dfsWorkerIds = filterProfiles(participants, "DFS").stream().map(ParticipantProfile::getId).collect(Collectors.toList());
+        List<String> ifsWorkerIds = filterProfiles(participants, "IFS").stream().map(ParticipantProfile::getId).collect(Collectors.toList());
+        List<String> dfsTWorkerIds = filterProfiles(participants, "DFS_T").stream().map(ParticipantProfile::getId).collect(Collectors.toList());
+        List<String> ifsTWorkerIds = filterProfiles(participants, "IFS_T").stream().map(ParticipantProfile::getId).collect(Collectors.toList());
+        if (!dfsWorkerIds.isEmpty()) notifyWorkers(dfsWorkerIds, subject, false, true);
+        if (!ifsWorkerIds.isEmpty()) notifyWorkers(ifsWorkerIds, subject, false, false);
+        if(!dfsTWorkerIds.isEmpty()) notifyWorkers(dfsTWorkerIds, subject, true, true);
+        if(!ifsTWorkerIds.isEmpty()) notifyWorkers(ifsTWorkerIds, subject, true, false);
+    }
+
+    private void notifyWorkers(List<String> ids, String subject, boolean training, boolean dfs) {
+        MTurkClient client = new MTurkClientProvider(config).getClient();
+        client.notifyWorkers(
+                NotifyWorkersRequest.builder()
+                        .subject(subject)
+                        .messageText(dfs ? getDfsInviteMessage(training) : getIfsInviteMessage(training))
+                        .workerIds(ids)
+                        .build()
+        );
     }
 
     private List<ParticipantProfile> filterProfiles(List<ParticipantProfile> profiles, String group) {
@@ -184,25 +182,25 @@ public class MTurkResource {
     }
 
 
-    private String getDfsInviteMessage() {
-        return String.format(getInviteMessage(),
+    private String getDfsInviteMessage(boolean forTraining) {
+        return String.format(getInviteMessage(), forTraining ? "" : "eligible for tenure promotion",
                 "After reviewing your profile, along with other profiles, two teachers selected you to provide appraisal feedback on their performance.",
-                "Kingston High School - Evaluation Invite", "Teacher");
+                "Kingston High School - Evaluation Invite", "Teacher", forTraining ? "Teacher Training" : "Tenure Promotion");
     }
 
-    private String getIfsInviteMessage() {
-        return String.format(getInviteMessage(),
+    private String getIfsInviteMessage(boolean forTraining) {
+        return String.format(getInviteMessage(), forTraining ? "" : "eligible for tenure promotion",
                 "After reviewing your profile, along with other profiles, a teacher supervisor selected you to provide appraisal feedback on two of their teachers' performance.",
-                "Kingston High School - Evaluation Invite", "Teacher Supervisor");
+                "Kingston High School - Evaluation Invite", "Teacher Supervisor", forTraining ? "Teacher Training" : "Tenure Promotion");
     }
 
     private String getInviteMessage() {
         return "Hello,\nYou have participated in a HIT titled 'Kingston High School - Teacher Evaluation'. " +
-                "In that HIT, you were asked to help evaluate job performance of teachers eligible for tenure promotion. " +
+                "In that HIT, you were asked to help evaluate job performance of teachers %s. " +
                 "At the end of the HIT an anonymous profile was created " +
                 "for you based on your experience with providing job reviews and your performance on the training rounds. %s\n" +
                 "In your worker dashboard, please search for and complete HIT named '%s'. You have been given the proper qualifications to participate in that HIT. " +
-                "The HIT takes 3 minutes and pays $2.\n\nSUMMARY:\nInviter: %s\nEvaluation Purpose: Tenure Promotion\n----\n" +
+                "The HIT takes 3 minutes and pays $2.\n\nSUMMARY:\nInviter: %s\nEvaluation Purpose: %s\n----\n" +
                 "Thank you";
     }
 }

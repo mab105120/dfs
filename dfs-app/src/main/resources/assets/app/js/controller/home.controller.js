@@ -54,7 +54,7 @@
         };
 
         $scope.continueFnc = function() {
-            $state.go('group-att-check', { showFailMessage: false, mode: $scope.profile.mode });
+            $state.go('group-att-check', { showFailMessage: false, mode: $scope.profile.mode, training: $scope.profile.training });
         }
 
         function handleFailure(response) {

@@ -7,9 +7,11 @@ import edu.grenoble.em.bourji.api.ParticipantProfile;
  */
 public enum ParticipantProfiles {
 
-    NFS(new ParticipantProfile(false, false, 2, 2, "high", 10, ExperimentMode.NFS)),
-    DFS(new ParticipantProfile(false, false, 2, 2, "high", 8, ExperimentMode.DFS)),
-    IFS(new ParticipantProfile(false, false, 2, 2, "high", 8, ExperimentMode.IFS));
+    NFS(new ParticipantProfile(false, true, 2, 2, "high", 10, ExperimentMode.NFS)),
+    NFS_T(new ParticipantProfile(false, false, true, 2, 2, "high", 10, ExperimentMode.NFS)),
+    DFS_T(new ParticipantProfile(false, true, true, 2, 2, "high", 8, ExperimentMode.DFS)),
+    DFS(new ParticipantProfile(false, true, 2, 2, "high", 8, ExperimentMode.DFS)),
+    IFS(new ParticipantProfile(false, true, 2, 2, "high", 8, ExperimentMode.IFS));
 
     private ParticipantProfile profile;
     ParticipantProfiles(ParticipantProfile profile) {

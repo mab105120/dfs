@@ -63,6 +63,11 @@
             controller: 'questConfidenceController',
             templateUrl: 'app/template/questionnaire/confidence.html'
           })
+          .state('reciprocation-orientation', {
+            url: '/questionnaire/ro',
+            controller: 'reciprocationOrientationController',
+            templateUrl: 'app/template/questionnaire/reciprocation-orientation.html'
+          })
           .state('evaluation', {
             url: '/evaluation/:id',
             controller: 'evaluationController',
@@ -74,7 +79,7 @@
             templateUrl: 'app/template/invite.html'
           })
           .state('group-att-check', {
-            url: '/group-att-check/:showFailMessage/:mode',
+            url: '/group-att-check/:showFailMessage/:mode/:training',
             controller: 'groupCheckController',
             templateUrl: 'app/template/group-att-check.html'
           })

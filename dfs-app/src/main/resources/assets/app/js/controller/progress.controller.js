@@ -40,17 +40,25 @@
             }
             var status_priority = 0;
 
-            if($scope.profile.mode !== 'EXPERT') {
+            $scope.rows.push(
+                {
+                    priority: status_priority++,
+                    id: 'QUEST_DEMO',
+                    display: 'General questionnaire'
+                },
+                {
+                    priority: status_priority++,
+                    id: 'QUEST_EXP',
+                    display: 'Professional experience questionnaire'
+                }
+            );
+
+            if($scope.profile.includeROScale) {
                 $scope.rows.push(
                     {
                         priority: status_priority++,
-                        id: 'QUEST_DEMO',
-                        display: 'General questionnaire'
-                    },
-                    {
-                        priority: status_priority++,
-                        id: 'QUEST_EXP',
-                        display: 'Professional experience questionnaire'
+                        id: 'QUEST_RO',
+                        display: 'General experience questionnaire'
                     }
                 );
             }
@@ -155,6 +163,8 @@
                 $state.go('questionnaire');
             } else if (id === 'QUEST_EXP') {
                 $state.go('experience');
+            } else if (id === 'QUEST_RO') {
+                $state.go('reciprocation-orientation')
             } else if (id === 'QUEST_CON') {
                 $state.go('confidence');
             } else if(id.startsWith('EVALUATION_P')) {

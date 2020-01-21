@@ -68,16 +68,40 @@
             <div class="row">
                 <div class="col-sm-12">
                     <p>
-                        {{
-                            profile.mode === 'DFS' ?
-                            'After reviewing your profile, two teachers, both eligible for tenure promotion, requested your feedback on their job performance.'
-                            : ''
-                        }}
-                        {{
-                            profile.mode === 'IFS' ?
-                            'After reviewing your profile, a supervisor requested your feedback on the job performance of two teachers eligible for tenure promotion.'
-                            : ''
-                        }}
+                        <span ng-hide="profile.training" >
+                            {{
+                                profile.mode === 'DFS' ?
+                                'After reviewing your profile, two teachers, both eligible for tenure promotion, requested your feedback on their job performance.'
+                                : ''
+                            }}
+                        </span>
+                        <!--For Developmental Appraisal-->
+                        <span ng-show="profile.training">
+                            {{
+                                profile.mode === 'DFS' ?
+                                'After reviewing your profile, two teachers requested your feedback on their job performance.'
+                                : ''
+                            }}
+                        </span>
+
+                        <span ng-hide="profile.training" >
+                            {{
+                                profile.mode === 'IFS' ?
+                                'After reviewing your profile, a supervisor requested your feedback on the job performance of two teachers eligible for tenure promotion.'
+                                : ''
+                            }}
+                        </span>
+
+
+                        <!--For Developmental Appraisal-->
+                         <span ng-show="profile.training">
+                             {{
+                                profile.mode === 'IFS' ?
+                                'After reviewing your profile, a supervisor requested your feedback on the job performance of two teachers.'
+                                : ''
+                            }}
+                         </span>
+
                         Next, you will be provided two teacher profiles containing reviews of the
                         teacher performance on three job dimensions.
                         These reviews were provided by the teacher's supervisors after observing the teachers in the classroom over an extended period of time.
@@ -87,8 +111,12 @@
             </div>
             <div class="row">
                 <div class="col-sm-12">
-                    <p style="color:red">
+                    <p style="color:red" ng-hide="profile.training">
                         Your input will be considered for the final tenure promotion decision. Please be mindful of the impact your decisions will have on personnel selection.
+                    </p>
+                    <!--For Developmental Appraisal-->
+                    <p style="color:red" ng-show="profile.training">
+                        Your evaluation will be considered to determine each teacher's need for training. Please be mindful of the impact your decisions will have on personnel selection.
                     </p>
                 </div>
             </div>

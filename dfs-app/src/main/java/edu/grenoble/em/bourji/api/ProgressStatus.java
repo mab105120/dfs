@@ -8,7 +8,7 @@ public enum ProgressStatus {
     NOT_STARTED(0),
     QUEST_DEMO(1),
     QUEST_EXP(2),
-    QUEST_CON(3),
+    QUEST_RO(3),
     EVALUATION_P1(4),
     EVALUATION_P2(5),
     EVALUATION_P3(6),

@@ -77,8 +77,11 @@ public class GroupAttentionCheckResource {
     }
 
     private boolean userPassAttentionCheck(String profile, GroupAttentionCheck groupAttentionCheck) {
-        if (!groupAttentionCheck.getPurpose().equals("Tenure promotion") || groupAttentionCheck.getConfirmation().equalsIgnoreCase("No"))
+        if (groupAttentionCheck.getConfirmation().equalsIgnoreCase("No"))
             return false;
+        if((profile.equals("DFS_T") || profile.equals("NFS_T")) && !groupAttentionCheck.getPurpose().equals("Teacher Training")) {
+            return false;
+        }
         if (profile.equals("DFS"))
             return groupAttentionCheck.getInviter().equalsIgnoreCase("A teacher");
         return !profile.equals("IFS") || groupAttentionCheck.getInviter().equalsIgnoreCase("A teacher's supervisor");

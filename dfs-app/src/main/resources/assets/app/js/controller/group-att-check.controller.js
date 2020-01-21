@@ -42,7 +42,7 @@
 
         $scope.purposeOptions = [
             'Tenure promotion',
-            'Developmental training',
+            'Teacher Training',
             'Salary raise',
             'I am not sure'
         ];
@@ -120,7 +120,7 @@
                     $('#questionTwoInput').css('border', '1px solid red');
                     return;
                 }
-                if ($scope.purpose !== 'Tenure promotion') {
+                if ($stateParams.training === "true" && $scope.purpose !== 'Teacher Training' || $stateParams.training === "false" && $scope.purpose !== 'Tenure promotion') {
                     alert('Your answer to question THREE is FALSE. You can not proceed unless you provide the correct answer. Please read the SUMMARY section of the invitation email carefully, you can find the answer there.\n\nAttempts: ' + $scope.attempts + '/3');
                     $scope.$parent.stopSpinner();
                     $('#questionThreeInput').css('border', '1px solid red');

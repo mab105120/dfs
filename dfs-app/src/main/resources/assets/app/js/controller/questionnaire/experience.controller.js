@@ -174,12 +174,11 @@
         };
 
         function routeToNextPage() {
-            if($scope.profile.includeConfidenceScale)
-                $state.go('confidence');
-            else if ($scope.profile.relative || $scope.profile.mode === 'EXPERT')
-                $state.go('evaluation', {id: 1});
-            else
+            if($scope.profile.includeROScale) {
+                $state.go('reciprocation-orientation');
+            } else {
                 $state.go('scoring-matrix');
+            }
         }
 
         function responseChanged(oldRes, newRes) {
