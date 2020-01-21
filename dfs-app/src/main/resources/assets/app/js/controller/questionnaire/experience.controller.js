@@ -174,7 +174,11 @@
         };
 
         function routeToNextPage() {
-            $state.go('reciprocation-orientation');
+            if($scope.profile.includeROScale) {
+                $state.go('reciprocation-orientation');
+            } else {
+                $state.go('scoring-matrix');
+            }
         }
 
         function responseChanged(oldRes, newRes) {

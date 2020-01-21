@@ -13,6 +13,7 @@
         profileService.getProfile()
         .then(
             function success(response) {
+                $scope.profile = response.data;
                 $scope.isExpert = response.data.mode === 'EXPERT';
                 $scope.practiceRounds = response.data.practice;
                 $scope.isRelative = response.data.relative === true;

@@ -40,18 +40,21 @@
             }
             var status_priority = 0;
 
-            if($scope.profile.mode !== 'EXPERT') {
+            $scope.rows.push(
+                {
+                    priority: status_priority++,
+                    id: 'QUEST_DEMO',
+                    display: 'General questionnaire'
+                },
+                {
+                    priority: status_priority++,
+                    id: 'QUEST_EXP',
+                    display: 'Professional experience questionnaire'
+                }
+            );
+
+            if($scope.profile.includeROScale) {
                 $scope.rows.push(
-                    {
-                        priority: status_priority++,
-                        id: 'QUEST_DEMO',
-                        display: 'General questionnaire'
-                    },
-                    {
-                        priority: status_priority++,
-                        id: 'QUEST_EXP',
-                        display: 'Professional experience questionnaire'
-                    },
                     {
                         priority: status_priority++,
                         id: 'QUEST_RO',

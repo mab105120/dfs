@@ -79,7 +79,7 @@
             templateUrl: 'app/template/invite.html'
           })
           .state('group-att-check', {
-            url: '/group-att-check/:showFailMessage/:mode',
+            url: '/group-att-check/:showFailMessage/:mode/:training',
             controller: 'groupCheckController',
             templateUrl: 'app/template/group-att-check.html'
           })

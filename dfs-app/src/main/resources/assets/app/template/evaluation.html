@@ -129,13 +129,12 @@
 
         <div class="row" ng-show="!isPractice">
             <div class="col-sm-10" style="margin-top:25px">
-                <p>I would recommend this teacher for tenure promotion: <span
-                        style="color: red">*</span>
-                    <label class="radio-inline"><input type="radio" name="optradio" value="Y" id="promoteYes"
-                                                       ng-model="promotionDecision">Yes</label>
-                    <label class="radio-inline"><input type="radio" name="optradio" value="N" id="promoteNo"
-                                                       ng-model="promotionDecision">No</label>
-                </p>
+                <p ng-hide="profile.training">I would recommend this teacher for tenure promotion: <span style="color: red">*</span></p>
+                <p ng-show="profile.training">I would recommend sending this teacher to the training conference: <span style="color: red">*</span></p>
+                <label class="radio-inline"><input type="radio" name="optradio" value="Y" id="promoteYes"
+                                                   ng-model="promotionDecision">Yes</label>
+                <label class="radio-inline"><input type="radio" name="optradio" value="N" id="promoteNo"
+                                                   ng-model="promotionDecision">No</label>
             </div>
         </div>
     </div>
